@@ -24,50 +24,46 @@ import starsAndBirdsImg from './assets/image-paintings/stars and birds.png'
 import symbolsImg from './assets/image-paintings/symbols.png'
 
 // Dimensions of a single master cluster tile for infinite wrapping
-const TILE_WIDTH = 2240
-const TILE_HEIGHT = 1300
+const TILE_WIDTH = 2280
+const TILE_HEIGHT = 1320
 
-// Painting layout with exact 10px gaps between adjacent artworks in groups
+// Painting layout with exact 10px gaps, zero overlaps, and complete authentic frames (no cutouts)
 const masterPaintings = [
   // --- Center Cluster ---
-  { id: 'center-horizontal', title: 'Friends Horizon', image: friendsImg, x: 900, y: 360, w: 320, h: 236 },
-  { id: 'center-red', title: 'Shades Crimson', image: shadesImg, x: 980, y: 606, w: 240, h: 325 }, // 10px gap from center-horiz bottom
-  { id: 'center-left-blue', title: 'Cobalt Curve', image: blueImg, x: 795, y: 606, w: 175, h: 237 }, // 10px gap from center-red left
-  { id: 'center-tiny-blue', title: 'Mini Cobalt', image: blueImg, x: 1150, y: 941, w: 70, h: 95 }, // 10px gap from center-red bottom
+  { id: 'center-horizontal', title: 'Friends Horizon', image: friendsImg, x: 940, y: 350, w: 320, h: 236 },
+  { id: 'center-red', title: 'Shades Crimson', image: shadesImg, x: 1020, y: 596, w: 240, h: 325 }, // 10px gap from center-horiz bottom
+  { id: 'center-left-blue', title: 'Cobalt Curve', image: blueImg, x: 830, y: 596, w: 180, h: 244 }, // 10px gap from center-red left
+  { id: 'center-tiny-blue', title: 'Mini Cobalt', image: blueImg, x: 1180, y: 931, w: 80, h: 108 }, // 10px gap from center-red bottom
+  { id: 'horse-crimson', title: 'Horse Study', image: horseImg, x: 1000, y: 1049, w: 260, h: 192 }, // 10px gap from center-tiny-blue bottom
 
   // --- Right of Center Cluster ---
-  { id: 'upper-right-red', title: 'Stars and Birds', image: starsAndBirdsImg, x: 1230, y: 180, w: 240, h: 325 }, // 10px gap from center right
-  { id: 'middle-right-yellow', title: 'Yellow Feline', image: catPaintingImg, x: 1230, y: 515, w: 175, h: 237 }, // 10px gap from upper-right-red
-  { id: 'bottom-right-mount', title: 'Mountain Peak', image: mountImg, x: 1230, y: 762, w: 320, h: 236 }, // 10px gap from middle-right-yellow
+  { id: 'upper-right-red', title: 'Stars and Birds', image: starsAndBirdsImg, x: 1270, y: 160, w: 220, h: 298 }, // 10px gap from center right
+  { id: 'middle-right-yellow', title: 'Yellow Feline', image: catPaintingImg, x: 1270, y: 468, w: 180, h: 244 }, // 10px gap from upper-right-red bottom
+  { id: 'bottom-right-mount', title: 'Mountain Peak', image: mountImg, x: 1270, y: 722, w: 320, h: 236 }, // 10px gap from middle-right-yellow bottom
 
   // --- Far Right Cluster ---
-  { id: 'top-right-pink', title: 'Striped Silhouette', image: curlyLadyImg, x: 1590, y: 100, w: 240, h: 325 },
-  { id: 'far-right-blue', title: 'Blue Edge Form', image: blueImg, x: 1590, y: 435, w: 240, h: 325 }, // 10px gap from top-right-pink
-
-  // --- Right Peripheral ---
-  { id: 'green-wall', title: 'Green Wall Pattern', image: greenWallImg, x: 1870, y: 120, w: 220, h: 298 },
-  { id: 'tiny-blue-corner', title: 'Corner Blue', image: blueImg, x: 2100, y: 160, w: 70, h: 95 }, // 10px gap from green-wall
-  { id: 'dancing-girl', title: 'Dancing Figure', image: dancingGirlImg, x: 1870, y: 428, w: 220, h: 162 }, // 10px gap from green-wall bottom
-  { id: 'symbols-yellow', title: 'Still Life Ochre', image: symbolsImg, x: 1870, y: 600, w: 200, h: 148 }, // 10px gap from dancing-girl
-  { id: 'blue-grass-horiz', title: 'Blue Grass Still Life', image: blueGrassImg, x: 1850, y: 758, w: 280, h: 207 }, // 10px gap from symbols-yellow
+  { id: 'top-right-pink', title: 'Striped Silhouette', image: curlyLadyImg, x: 1660, y: 120, w: 240, h: 325 },
+  { id: 'far-right-blue', title: 'Blue Edge Form', image: blueImg, x: 1660, y: 455, w: 240, h: 325 }, // 10px gap from top-right-pink bottom
+  { id: 'green-wall', title: 'Green Wall Pattern', image: greenWallImg, x: 1910, y: 140, w: 220, h: 298 }, // 10px gap from far-right cluster
+  { id: 'tiny-blue-corner', title: 'Corner Blue', image: blueImg, x: 2140, y: 180, w: 70, h: 95 }, // 10px gap from green-wall right
+  { id: 'dancing-girl', title: 'Dancing Figure', image: dancingGirlImg, x: 1910, y: 448, w: 220, h: 162 }, // 10px gap from green-wall bottom
+  { id: 'symbols-yellow', title: 'Still Life Ochre', image: symbolsImg, x: 1910, y: 620, w: 200, h: 148 }, // 10px gap from dancing-girl bottom
+  { id: 'blue-grass-horiz', title: 'Blue Grass Still Life', image: blueGrassImg, x: 1910, y: 778, w: 280, h: 207 }, // 10px gap from symbols-yellow bottom & 10px from far-right-blue
 
   // --- Left Cluster ---
-  { id: 'top-blue-snippet', title: 'Blue Header Accent', image: blueImg, x: 530, y: 140, w: 175, h: 90 },
-  { id: 'top-left-horiz', title: 'Abstract Composition', image: abstractImg, x: 435, y: 240, w: 320, h: 236 }, // 10px gap from top-blue-snippet
-  { id: 'bottom-left-green', title: 'Botanical Grass', image: grassImg, x: 435, y: 486, w: 240, h: 325 }, // 10px gap from top-left-horiz
+  { id: 'top-blue-vertical', title: 'Blue Header Form', image: blueImg, x: 525, y: 17, w: 150, h: 203 }, // Complete unclipped painting
+  { id: 'top-left-horiz', title: 'Abstract Composition', image: abstractImg, x: 440, y: 230, w: 320, h: 236 }, // 10px gap from top-blue bottom
+  { id: 'bottom-left-green', title: 'Botanical Grass', image: grassImg, x: 440, y: 476, w: 240, h: 325 }, // 10px gap from top-left-horiz bottom
 
-  // --- Left Peripheral ---
-  { id: 'green-lady', title: 'Green Robe Lady', image: greenLadyImg, x: 55, y: 80, w: 240, h: 325 },
-  { id: 'top-left-accent-blue', title: 'Cobalt Accent', image: blueImg, x: 155, y: 415, w: 140, h: 189 }, // 10px gap from green-lady
-  { id: 'lady-with-book', title: 'Reading Lady', image: ladyWithBookImg, x: 55, y: 614, w: 180, h: 244 },
-  { id: 'symbols-graphic', title: 'Graphic Still Life', image: symbolsImg, x: 245, y: 614, w: 180, h: 133 }, // 10px gap from lady-with-book
-  { id: 'coat-pattern', title: 'Coat Study', image: coatImg, x: 245, y: 757, w: 180, h: 133 }, // 10px gap from symbols-graphic & 10px gap from grass
-
-  // --- Bottom Center Accent ---
-  { id: 'horse-crimson', title: 'Horse Study', image: horseImg, x: 960, y: 1046, w: 240, h: 177 }, // 10px gap from center-tiny-blue
+  // --- Far Left Cluster ---
+  { id: 'green-lady', title: 'Green Robe Lady', image: greenLadyImg, x: 30, y: 100, w: 220, h: 298 },
+  { id: 'top-left-accent-blue', title: 'Cobalt Accent', image: blueImg, x: 260, y: 160, w: 140, h: 190 }, // 10px gap from green-lady right
+  { id: 'lady-with-book', title: 'Reading Lady', image: ladyWithBookImg, x: 10, y: 520, w: 170, h: 230 },
+  { id: 'symbols-graphic', title: 'Graphic Still Life', image: symbolsImg, x: 190, y: 472, w: 200, h: 148 }, // 10px gap from lady-with-book right
+  { id: 'coat-pattern', title: 'Coat Study', image: coatImg, x: 190, y: 630, w: 240, h: 177 }, // 10px gap from symbols bottom & 10px from grass left
 ]
 
-// 3x3 Tile Grid Offsets for seamless 2D infinite wrapping in all directions
+// 3x3 Tile Matrix for continuous, seamless 2D infinite wrapping
 const TILES = [
   { col: -1, row: -1 },
   { col: 0, row: -1 },
@@ -85,13 +81,12 @@ function App() {
   const canvasRef = useRef(null)
 
   useEffect(() => {
-    // 1. Initialize Locomotive Scroll for smooth scrolling environment
+    // 1. Initialize Locomotive Scroll
     const locomotiveScroll = new LocomotiveScroll()
 
-    // 2. Buttery Smooth 2D Infinite Drag Physics
-    // Initial center offset placing the central masterpiece cluster right into the viewport
-    const initialCenterX = -(1120 - window.innerWidth / 2)
-    const initialCenterY = -(650 - window.innerHeight / 2)
+    // 2. Position canvas centered on the main gallery cluster
+    const initialCenterX = -(1100 - window.innerWidth / 2)
+    const initialCenterY = -(620 - window.innerHeight / 2)
 
     let targetX = initialCenterX
     let targetY = initialCenterY
@@ -104,13 +99,16 @@ function App() {
     let lastPointerX = 0
     let lastPointerY = 0
 
+    // High-resolution motion history buffer for calculating release "slip" inertia
+    const motionHistory = []
+
     const viewport = viewportRef.current
     const canvas = canvasRef.current
     if (!viewport || !canvas) return
 
     // Pointer Drag Handlers
     const onPointerDown = (e) => {
-      // Ignore click on header navigation buttons
+      // Do not hijack clicks on navigation buttons
       if (e.target.closest('.header-nav') || e.target.closest('button')) return
 
       isPointerDown = true
@@ -118,21 +116,29 @@ function App() {
       lastPointerY = e.clientY
       velX = 0
       velY = 0
+
+      // Reset motion history with initial point
+      motionHistory.length = 0
+      motionHistory.push({ x: e.clientX, y: e.clientY, time: performance.now() })
+
       viewport.style.cursor = 'grabbing'
     }
 
     const onPointerMove = (e) => {
       if (!isPointerDown) return
 
+      const now = performance.now()
       const dx = e.clientX - lastPointerX
       const dy = e.clientY - lastPointerY
 
       targetX += dx
       targetY += dy
 
-      // Smooth velocity tracking for momentum release
-      velX = velX * 0.35 + dx * 0.65
-      velY = velY * 0.35 + dy * 0.65
+      // Push into motion history buffer (keep last 120ms of events)
+      motionHistory.push({ x: e.clientX, y: e.clientY, time: now })
+      while (motionHistory.length > 0 && now - motionHistory[0].time > 120) {
+        motionHistory.shift()
+      }
 
       lastPointerX = e.clientX
       lastPointerY = e.clientY
@@ -142,17 +148,36 @@ function App() {
       if (!isPointerDown) return
       isPointerDown = false
       viewport.style.cursor = 'grab'
+
+      // Calculate the luxurious "slidly slip" momentum after-effect
+      const now = performance.now()
+      // Filter out points older than 100ms
+      while (motionHistory.length > 0 && now - motionHistory[0].time > 100) {
+        motionHistory.shift()
+      }
+
+      if (motionHistory.length >= 2) {
+        const oldest = motionHistory[0]
+        const newest = motionHistory[motionHistory.length - 1]
+        const dt = Math.max(16, newest.time - oldest.time)
+        const vx = (newest.x - oldest.x) / dt
+        const vy = (newest.y - oldest.y) / dt
+
+        // Kinetic fling boost creating that buttery slip slide
+        velX = vx * 22
+        velY = vy * 22
+      }
     }
 
-    // Wheel / Trackpad smooth panning
+    // Wheel / Trackpad smooth panning with silky slip
     const onWheel = (e) => {
       e.preventDefault()
 
       targetX -= e.deltaX * 1.15
       targetY -= e.deltaY * 1.15
 
-      velX = -e.deltaX * 0.22
-      velY = -e.deltaY * 0.22
+      velX = -e.deltaX * 0.28
+      velY = -e.deltaY * 0.28
     }
 
     // Prevent default ghost image dragging
@@ -168,15 +193,15 @@ function App() {
     viewport.addEventListener('wheel', onWheel, { passive: false })
     viewport.addEventListener('dragstart', onDragStart)
 
-    // GSAP Ticker for 120 FPS Buttery Smooth Physics & Modulo Infinite Wrapping
+    // GSAP Ticker: 120 FPS Buttery Physics, Momentum Slip & 2D Infinite Modulo Wrapping
     const tickerUpdate = () => {
       if (!isPointerDown) {
-        // Apply inertia with silky smooth friction
+        // Silky momentum slip friction decay (0.958 gives a sustained, effortless glide)
         targetX += velX
         targetY += velY
 
-        velX *= 0.94
-        velY *= 0.94
+        velX *= 0.958
+        velY *= 0.958
 
         if (Math.abs(velX) < 0.005) velX = 0
         if (Math.abs(velY) < 0.005) velY = 0
