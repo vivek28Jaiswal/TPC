@@ -31,201 +31,172 @@ const V = (w) => Math.round((w * 352) / 260)
 // Expansive 5-tier x 5-column square gallery wall (~4800px width x ~4800px height)
 // Exactly 10px gaps within clusters, 0 overlaps, and complete authentic frames
 const masterPaintings = [
-  // =========================================================================
-  // TIER 1 (TOP ATELIERS) — Y: 100 to 1100
-  // =========================================================================
-  { id: 't1-c1-green-lady', title: 'Green Robe Lady', image: greenLadyImg, x: 60, y: 100, w: 220, h: V(220) },
-  { id: 't1-c1-blue', title: 'Cobalt Study', image: blueImg, x: 290, y: 100, w: 140, h: V(140) },
-  { id: 't1-c1-symbols', title: 'Graphic Still Life', image: symbolsImg, x: 290, y: 100 + V(140) + 10, w: 190, h: H(190) },
-  { id: 't1-c1-lady-book', title: 'Reading Lady', image: ladyWithBookImg, x: 60, y: 100 + V(220) + 10, w: 180, h: V(180) },
-  { id: 't1-c1-coat', title: 'Polka Coat', image: coatImg, x: 250, y: 440, w: 240, h: H(240) },
-  { id: 't1-c1-dancing', title: 'Dancing Movement', image: dancingGirlImg, x: 250, y: 440 + H(240) + 10, w: 240, h: H(240) },
-  { id: 't1-c1-abstract', title: 'Abstract Harmony', image: abstractImg, x: 500, y: 120, w: 320, h: H(320) },
-  { id: 't1-c1-grass', title: 'Botanical Grass', image: grassImg, x: 500, y: 120 + H(320) + 10, w: 240, h: V(240) },
-  { id: 't1-c1-blue-vert', title: 'Deep Cobalt', image: blueImg, x: 750, y: 120 + H(320) + 10, w: 170, h: V(170) },
-  { id: 't1-c1-horse', title: 'Horse Sketch', image: horseImg, x: 60, y: 850, w: 260, h: H(260) },
-  { id: 't1-c1-cat', title: 'Golden Feline', image: catPaintingImg, x: 330, y: 850, w: 180, h: V(180) },
-  { id: 't1-c1-mount', title: 'Ridge Line', image: mountImg, x: 520, y: 850, w: 300, h: H(300) },
+  { id: 'p-0-1-1', title: 'Cobalt Study', image: blueImg, x: 521, y: 152, w: 210, h: 284 },
+  { id: 'p-0-2-2', title: 'Abstract Harmony', image: abstractImg, x: 795, y: 211, w: 285, h: 210 },
+  { id: 'p-0-3-3', title: 'Blue Grass Melody', image: blueGrassImg, x: 1165, y: 135, w: 240, h: 177 },
+  { id: 'p-0-3-4', title: 'Golden Feline', image: catPaintingImg, x: 1325, y: 322, w: 80, h: 108 },
+  { id: 'p-0-4-5', title: 'Curly Silhouette', image: curlyLadyImg, x: 1517, y: 140, w: 210, h: 284 },
+  { id: 'p-0-5-6', title: 'Botanical Grass', image: grassImg, x: 1804, y: 182, w: 150, h: 203 },
+  { id: 'p-0-5-7', title: 'Green Robe Lady', image: greenLadyImg, x: 1964, y: 192, w: 150, h: 203 },
+  { id: 'p-0-6-8', title: 'Polka Coat', image: coatImg, x: 2155, y: 175, w: 285, h: 210 },
+  { id: 'p-0-7-9', title: 'Dancing Movement', image: dancingGirlImg, x: 2505, y: 100, w: 225, h: 166 },
+  { id: 'p-0-7-10', title: 'Companions', image: friendsImg, x: 2520, y: 276, w: 225, h: 166 },
+  { id: 'p-0-8-11', title: 'Green Wall Geometry', image: greenWallImg, x: 2844, y: 124, w: 210, h: 284 },
+  { id: 'p-1-0-12', title: 'Horse Sketch', image: horseImg, x: 71, y: 470, w: 265, h: 196 },
+  { id: 'p-1-1-13', title: 'Reading Lady', image: ladyWithBookImg, x: 433, y: 460, w: 145, h: 196 },
+  { id: 'p-1-1-14', title: 'Mountain Ridge', image: mountImg, x: 588, y: 480, w: 155, h: 114 },
+  { id: 'p-1-2-15', title: 'Crimson Shades', image: shadesImg, x: 873, y: 535, w: 190, h: 257 },
+  { id: 'p-1-3-16', title: 'Graphic Still Life', image: symbolsImg, x: 1189, y: 473, w: 210, h: 155 },
+  { id: 'p-1-3-17', title: 'Abstract Harmony', image: abstractImg, x: 1189, y: 638, w: 210, h: 155 },
+  { id: 'p-1-4-18', title: 'Blue Grass Melody', image: blueGrassImg, x: 1476, y: 562, w: 285, h: 210 },
+  { id: 'p-1-5-19', title: 'Stars and Birds', image: starsAndBirdsImg, x: 1826, y: 527, w: 180, h: 244 },
+  { id: 'p-1-5-20', title: 'Cobalt Study', image: blueImg, x: 2016, y: 627, w: 75, h: 102 },
+  { id: 'p-1-6-21', title: 'Polka Coat', image: coatImg, x: 2173, y: 486, w: 240, h: 177 },
+  { id: 'p-1-6-22', title: 'Golden Feline', image: catPaintingImg, x: 2333, y: 673, w: 80, h: 108 },
+  { id: 'p-1-7-23', title: 'Curly Silhouette', image: curlyLadyImg, x: 2516, y: 489, w: 210, h: 284 },
+  { id: 'p-1-8-24', title: 'Dancing Movement', image: dancingGirlImg, x: 2836, y: 526, w: 285, h: 210 },
+  { id: 'p-1-9-25', title: 'Botanical Grass', image: grassImg, x: 3177, y: 525, w: 135, h: 183 },
+  { id: 'p-1-9-26', title: 'Green Robe Lady', image: greenLadyImg, x: 3322, y: 535, w: 135, h: 183 },
+  { id: 'p-2-0-27', title: 'Green Wall Geometry', image: greenWallImg, x: 76, y: 816, w: 230, h: 311 },
+  { id: 'p-2-1-28', title: 'Companions', image: friendsImg, x: 500, y: 810, w: 225, h: 166 },
+  { id: 'p-2-1-29', title: 'Horse Sketch', image: horseImg, x: 515, y: 986, w: 225, h: 166 },
+  { id: 'p-2-2-30', title: 'Reading Lady', image: ladyWithBookImg, x: 802, y: 821, w: 135, h: 183 },
+  { id: 'p-2-2-31', title: 'Crimson Shades', image: shadesImg, x: 947, y: 831, w: 135, h: 183 },
+  { id: 'p-2-3-32', title: 'Mountain Ridge', image: mountImg, x: 1137, y: 811, w: 285, h: 210 },
+  { id: 'p-2-4-33', title: 'Stars and Birds', image: starsAndBirdsImg, x: 1462, y: 945, w: 145, h: 196 },
+  { id: 'p-2-4-34', title: 'Graphic Still Life', image: symbolsImg, x: 1617, y: 965, w: 155, h: 114 },
+  { id: 'p-2-5-35', title: 'Cobalt Study', image: blueImg, x: 1866, y: 882, w: 190, h: 257 },
+  { id: 'p-2-6-36', title: 'Abstract Harmony', image: abstractImg, x: 2166, y: 925, w: 265, h: 196 },
+  { id: 'p-2-7-37', title: 'Blue Grass Melody', image: blueGrassImg, x: 2511, y: 810, w: 225, h: 166 },
+  { id: 'p-2-7-38', title: 'Polka Coat', image: coatImg, x: 2526, y: 986, w: 225, h: 166 },
+  { id: 'p-2-8-39', title: 'Golden Feline', image: catPaintingImg, x: 2841, y: 873, w: 180, h: 244 },
+  { id: 'p-2-8-40', title: 'Curly Silhouette', image: curlyLadyImg, x: 3031, y: 973, w: 75, h: 102 },
+  { id: 'p-2-9-41', title: 'Dancing Movement', image: dancingGirlImg, x: 3179, y: 894, w: 265, h: 196 },
+  { id: 'p-2-10-42', title: 'Botanical Grass', image: grassImg, x: 3635, y: 839, w: 210, h: 284 },
+  { id: 'p-3-0-43', title: 'Companions', image: friendsImg, x: 78, y: 1179, w: 240, h: 177 },
+  { id: 'p-3-0-44', title: 'Green Robe Lady', image: greenLadyImg, x: 238, y: 1366, w: 80, h: 108 },
+  { id: 'p-3-1-45', title: 'Green Wall Geometry', image: greenWallImg, x: 532, y: 1179, w: 210, h: 284 },
+  { id: 'p-3-2-46', title: 'Horse Sketch', image: horseImg, x: 799, y: 1189, w: 285, h: 210 },
+  { id: 'p-3-3-47', title: 'Reading Lady', image: ladyWithBookImg, x: 1154, y: 1176, w: 180, h: 244 },
+  { id: 'p-3-3-48', title: 'Crimson Shades', image: shadesImg, x: 1344, y: 1276, w: 75, h: 102 },
+  { id: 'p-3-4-49', title: 'Mountain Ridge', image: mountImg, x: 1508, y: 1165, w: 225, h: 166 },
+  { id: 'p-3-4-50', title: 'Graphic Still Life', image: symbolsImg, x: 1523, y: 1341, w: 225, h: 166 },
+  { id: 'p-3-5-51', title: 'Stars and Birds', image: starsAndBirdsImg, x: 1805, y: 1306, w: 145, h: 196 },
+  { id: 'p-3-5-52', title: 'Abstract Harmony', image: abstractImg, x: 1960, y: 1326, w: 155, h: 114 },
+  { id: 'p-3-6-53', title: 'Blue Grass Melody', image: blueGrassImg, x: 2178, y: 1205, w: 240, h: 177 },
+  { id: 'p-3-6-54', title: 'Cobalt Study', image: blueImg, x: 2338, y: 1392, w: 80, h: 108 },
+  { id: 'p-3-7-55', title: 'Golden Feline', image: catPaintingImg, x: 2529, y: 1234, w: 190, h: 257 },
+  { id: 'p-3-8-56', title: 'Curly Silhouette', image: curlyLadyImg, x: 2834, y: 1262, w: 150, h: 203 },
+  { id: 'p-3-8-57', title: 'Botanical Grass', image: grassImg, x: 2994, y: 1272, w: 150, h: 203 },
+  { id: 'p-3-9-58', title: 'Polka Coat', image: coatImg, x: 3181, y: 1265, w: 265, h: 196 },
+  { id: 'p-3-10-59', title: 'Dancing Movement', image: dancingGirlImg, x: 3609, y: 1165, w: 225, h: 166 },
+  { id: 'p-3-10-60', title: 'Companions', image: friendsImg, x: 3624, y: 1341, w: 225, h: 166 },
+  { id: 'p-4-0-61', title: 'Horse Sketch', image: horseImg, x: 77, y: 1583, w: 265, h: 196 },
+  { id: 'p-4-1-62', title: 'Green Robe Lady', image: greenLadyImg, x: 415, y: 1566, w: 150, h: 203 },
+  { id: 'p-4-1-63', title: 'Green Wall Geometry', image: greenWallImg, x: 575, y: 1576, w: 150, h: 203 },
+  { id: 'p-4-2-64', title: 'Reading Lady', image: ladyWithBookImg, x: 818, y: 1548, w: 180, h: 244 },
+  { id: 'p-4-2-65', title: 'Crimson Shades', image: shadesImg, x: 1008, y: 1648, w: 75, h: 102 },
+  { id: 'p-4-3-66', title: 'Mountain Ridge', image: mountImg, x: 1176, y: 1520, w: 225, h: 166 },
+  { id: 'p-4-3-67', title: 'Graphic Still Life', image: symbolsImg, x: 1191, y: 1696, w: 225, h: 166 },
+  { id: 'p-4-4-68', title: 'Stars and Birds', image: starsAndBirdsImg, x: 1531, y: 1528, w: 210, h: 284 },
+  { id: 'p-4-5-69', title: 'Abstract Harmony', image: abstractImg, x: 1820, y: 1531, w: 285, h: 210 },
+  { id: 'p-4-6-70', title: 'Cobalt Study', image: blueImg, x: 2204, y: 1521, w: 190, h: 257 },
+  { id: 'p-4-7-71', title: 'Golden Feline', image: catPaintingImg, x: 2492, y: 1656, w: 145, h: 196 },
+  { id: 'p-4-7-72', title: 'Blue Grass Melody', image: blueGrassImg, x: 2647, y: 1676, w: 155, h: 114 },
+  { id: 'p-4-8-73', title: 'Polka Coat', image: coatImg, x: 2845, y: 1646, w: 265, h: 196 },
+  { id: 'p-4-9-74', title: 'Dancing Movement', image: dancingGirlImg, x: 3186, y: 1556, w: 240, h: 177 },
+  { id: 'p-4-9-75', title: 'Curly Silhouette', image: curlyLadyImg, x: 3346, y: 1743, w: 80, h: 108 },
+  { id: 'p-4-10-76', title: 'Botanical Grass', image: grassImg, x: 3522, y: 1581, w: 190, h: 257 },
+  { id: 'p-5-0-77', title: 'Green Robe Lady', image: greenLadyImg, x: 85, y: 1890, w: 230, h: 311 },
+  { id: 'p-5-1-78', title: 'Companions', image: friendsImg, x: 419, y: 1884, w: 210, h: 155 },
+  { id: 'p-5-1-79', title: 'Horse Sketch', image: horseImg, x: 419, y: 2049, w: 210, h: 155 },
+  { id: 'p-5-2-80', title: 'Mountain Ridge', image: mountImg, x: 839, y: 1940, w: 245, h: 181 },
+  { id: 'p-5-3-81', title: 'Green Wall Geometry', image: greenWallImg, x: 1121, y: 1923, w: 145, h: 196 },
+  { id: 'p-5-3-82', title: 'Graphic Still Life', image: symbolsImg, x: 1276, y: 1943, w: 155, h: 114 },
+  { id: 'p-5-4-83', title: 'Reading Lady', image: ladyWithBookImg, x: 1496, y: 1900, w: 180, h: 244 },
+  { id: 'p-5-4-84', title: 'Crimson Shades', image: shadesImg, x: 1686, y: 2000, w: 75, h: 102 },
+  { id: 'p-5-5-85', title: 'Abstract Harmony', image: abstractImg, x: 1846, y: 1906, w: 245, h: 181 },
+  { id: 'p-5-6-86', title: 'Blue Grass Melody', image: blueGrassImg, x: 2184, y: 1875, w: 225, h: 166 },
+  { id: 'p-5-6-87', title: 'Polka Coat', image: coatImg, x: 2199, y: 2051, w: 225, h: 166 },
+  { id: 'p-5-7-88', title: 'Stars and Birds', image: starsAndBirdsImg, x: 2523, y: 1876, w: 230, h: 311 },
+  { id: 'p-5-8-89', title: 'Dancing Movement', image: dancingGirlImg, x: 2842, y: 2003, w: 285, h: 210 },
+  { id: 'p-5-9-90', title: 'Cobalt Study', image: blueImg, x: 3183, y: 2010, w: 135, h: 183 },
+  { id: 'p-5-9-91', title: 'Golden Feline', image: catPaintingImg, x: 3328, y: 2020, w: 135, h: 183 },
+  { id: 'p-5-10-92', title: 'Companions', image: friendsImg, x: 3523, y: 1997, w: 265, h: 196 },
+  { id: 'p-6-0-93', title: 'Curly Silhouette', image: curlyLadyImg, x: 73, y: 2325, w: 145, h: 196 },
+  { id: 'p-6-0-94', title: 'Horse Sketch', image: horseImg, x: 228, y: 2345, w: 155, h: 114 },
+  { id: 'p-6-1-95', title: 'Mountain Ridge', image: mountImg, x: 419, y: 2314, w: 265, h: 196 },
+  { id: 'p-6-2-96', title: 'Botanical Grass', image: grassImg, x: 875, y: 2259, w: 210, h: 284 },
+  { id: 'p-6-3-97', title: 'Graphic Still Life', image: symbolsImg, x: 1181, y: 2250, w: 240, h: 177 },
+  { id: 'p-6-3-98', title: 'Green Robe Lady', image: greenLadyImg, x: 1341, y: 2437, w: 80, h: 108 },
+  { id: 'p-6-4-99', title: 'Abstract Harmony', image: abstractImg, x: 1512, y: 2290, w: 245, h: 181 },
+  { id: 'p-6-5-100', title: 'Green Wall Geometry', image: greenWallImg, x: 1807, y: 2269, w: 150, h: 203 },
+  { id: 'p-6-5-101', title: 'Reading Lady', image: ladyWithBookImg, x: 1967, y: 2279, w: 150, h: 203 },
+  { id: 'p-6-6-102', title: 'Crimson Shades', image: shadesImg, x: 2173, y: 2253, w: 180, h: 244 },
+  { id: 'p-6-6-103', title: 'Stars and Birds', image: starsAndBirdsImg, x: 2363, y: 2353, w: 75, h: 102 },
+  { id: 'p-6-7-104', title: 'Blue Grass Melody', image: blueGrassImg, x: 2521, y: 2230, w: 225, h: 166 },
+  { id: 'p-6-7-105', title: 'Polka Coat', image: coatImg, x: 2536, y: 2406, w: 225, h: 166 },
+  { id: 'p-6-8-106', title: 'Cobalt Study', image: blueImg, x: 2872, y: 2238, w: 190, h: 257 },
+  { id: 'p-6-9-107', title: 'Dancing Movement', image: dancingGirlImg, x: 3187, y: 2234, w: 265, h: 196 },
+  { id: 'p-6-10-108', title: 'Golden Feline', image: catPaintingImg, x: 3528, y: 2257, w: 230, h: 311 },
+  { id: 'p-7-0-109', title: 'Companions', image: friendsImg, x: 83, y: 2695, w: 265, h: 196 },
+  { id: 'p-7-1-110', title: 'Curly Silhouette', image: curlyLadyImg, x: 421, y: 2652, w: 180, h: 244 },
+  { id: 'p-7-1-111', title: 'Botanical Grass', image: grassImg, x: 611, y: 2752, w: 75, h: 102 },
+  { id: 'p-7-2-112', title: 'Horse Sketch', image: horseImg, x: 849, y: 2585, w: 225, h: 166 },
+  { id: 'p-7-2-113', title: 'Mountain Ridge', image: mountImg, x: 864, y: 2761, w: 225, h: 166 },
+  { id: 'p-7-3-114', title: 'Green Robe Lady', image: greenLadyImg, x: 1228, y: 2631, w: 190, h: 257 },
+  { id: 'p-7-4-115', title: 'Green Wall Geometry', image: greenWallImg, x: 1465, y: 2647, w: 150, h: 203 },
+  { id: 'p-7-4-116', title: 'Reading Lady', image: ladyWithBookImg, x: 1625, y: 2657, w: 150, h: 203 },
+  { id: 'p-7-5-117', title: 'Graphic Still Life', image: symbolsImg, x: 1824, y: 2639, w: 285, h: 210 },
+  { id: 'p-7-6-118', title: 'Crimson Shades', image: shadesImg, x: 2151, y: 2635, w: 145, h: 196 },
+  { id: 'p-7-6-119', title: 'Abstract Harmony', image: abstractImg, x: 2306, y: 2655, w: 155, h: 114 },
+  { id: 'p-7-7-120', title: 'Stars and Birds', image: starsAndBirdsImg, x: 2546, y: 2608, w: 190, h: 257 },
+  { id: 'p-7-8-121', title: 'Blue Grass Melody', image: blueGrassImg, x: 2859, y: 2594, w: 240, h: 177 },
+  { id: 'p-7-8-122', title: 'Cobalt Study', image: blueImg, x: 3019, y: 2781, w: 80, h: 108 },
+  { id: 'p-7-9-123', title: 'Polka Coat', image: coatImg, x: 3184, y: 2603, w: 285, h: 210 },
+  { id: 'p-7-10-124', title: 'Dancing Movement', image: dancingGirlImg, x: 3529, y: 2585, w: 225, h: 166 },
+  { id: 'p-7-10-125', title: 'Companions', image: friendsImg, x: 3544, y: 2761, w: 225, h: 166 },
+  { id: 'p-8-0-126', title: 'Golden Feline', image: catPaintingImg, x: 98, y: 2989, w: 210, h: 284 },
+  { id: 'p-8-1-127', title: 'Horse Sketch', image: horseImg, x: 426, y: 2976, w: 240, h: 177 },
+  { id: 'p-8-1-128', title: 'Curly Silhouette', image: curlyLadyImg, x: 586, y: 3163, w: 80, h: 108 },
+  { id: 'p-8-2-129', title: 'Mountain Ridge', image: mountImg, x: 761, y: 3057, w: 245, h: 181 },
+  { id: 'p-8-3-130', title: 'Botanical Grass', image: grassImg, x: 1123, y: 3036, w: 145, h: 196 },
+  { id: 'p-8-3-131', title: 'Graphic Still Life', image: symbolsImg, x: 1278, y: 3056, w: 155, h: 114 },
+  { id: 'p-8-4-132', title: 'Green Robe Lady', image: greenLadyImg, x: 1530, y: 2957, w: 230, h: 311 },
+  { id: 'p-8-5-133', title: 'Abstract Harmony', image: abstractImg, x: 1857, y: 2940, w: 225, h: 166 },
+  { id: 'p-8-5-134', title: 'Blue Grass Melody', image: blueGrassImg, x: 1872, y: 3116, w: 225, h: 166 },
+  { id: 'p-8-6-135', title: 'Polka Coat', image: coatImg, x: 2189, y: 3013, w: 245, h: 181 },
+  { id: 'p-8-7-136', title: 'Green Wall Geometry', image: greenWallImg, x: 2515, y: 2977, w: 180, h: 244 },
+  { id: 'p-8-7-137', title: 'Reading Lady', image: ladyWithBookImg, x: 2705, y: 3077, w: 75, h: 102 },
+  { id: 'p-8-8-138', title: 'Crimson Shades', image: shadesImg, x: 2866, y: 2949, w: 230, h: 311 },
+  { id: 'p-8-9-139', title: 'Stars and Birds', image: starsAndBirdsImg, x: 3180, y: 2971, w: 150, h: 203 },
+  { id: 'p-8-9-140', title: 'Cobalt Study', image: blueImg, x: 3340, y: 2981, w: 150, h: 203 },
+  { id: 'p-8-10-141', title: 'Dancing Movement', image: dancingGirlImg, x: 3529, y: 2965, w: 265, h: 196 },
+  { id: 'p-9-1-142', title: 'Companions', image: friendsImg, x: 428, y: 3441, w: 245, h: 181 },
+  { id: 'p-9-2-143', title: 'Golden Feline', image: catPaintingImg, x: 766, y: 3342, w: 210, h: 284 },
+  { id: 'p-9-3-144', title: 'Horse Sketch', image: horseImg, x: 1217, y: 3310, w: 210, h: 155 },
+  { id: 'p-9-3-145', title: 'Mountain Ridge', image: mountImg, x: 1217, y: 3475, w: 210, h: 155 },
+  { id: 'p-9-4-146', title: 'Graphic Still Life', image: symbolsImg, x: 1520, y: 3407, w: 245, h: 181 },
+  { id: 'p-9-5-147', title: 'Curly Silhouette', image: curlyLadyImg, x: 1895, y: 3348, w: 190, h: 257 },
+  { id: 'p-9-6-148', title: 'Abstract Harmony', image: abstractImg, x: 2194, y: 3320, w: 240, h: 177 },
+  { id: 'p-9-6-149', title: 'Botanical Grass', image: grassImg, x: 2354, y: 3507, w: 80, h: 108 },
+  { id: 'p-9-7-150', title: 'Blue Grass Melody', image: blueGrassImg, x: 2507, y: 3360, w: 285, h: 210 },
+  { id: 'p-9-8-151', title: 'Green Robe Lady', image: greenLadyImg, x: 2884, y: 3330, w: 190, h: 257 },
+  { id: 'p-9-9-152', title: 'Green Wall Geometry', image: greenWallImg, x: 3180, y: 3346, w: 145, h: 196 },
+  { id: 'p-9-9-153', title: 'Polka Coat', image: coatImg, x: 3335, y: 3366, w: 155, h: 114 },
+  { id: 'p-10-2-154', title: 'Dancing Movement', image: dancingGirlImg, x: 763, y: 3774, w: 285, h: 210 },
+  { id: 'p-10-3-155', title: 'Reading Lady', image: ladyWithBookImg, x: 1240, y: 3723, w: 190, h: 257 },
+  { id: 'p-10-4-156', title: 'Crimson Shades', image: shadesImg, x: 1493, y: 3770, w: 135, h: 183 },
+  { id: 'p-10-4-157', title: 'Stars and Birds', image: starsAndBirdsImg, x: 1638, y: 3780, w: 135, h: 183 },
+  { id: 'p-10-5-158', title: 'Companions', image: friendsImg, x: 1843, y: 3758, w: 265, h: 196 },
+  { id: 'p-10-6-159', title: 'Horse Sketch', image: horseImg, x: 2216, y: 3663, w: 210, h: 155 },
+  { id: 'p-10-6-160', title: 'Mountain Ridge', image: mountImg, x: 2216, y: 3828, w: 210, h: 155 },
+  { id: 'p-10-7-161', title: 'Cobalt Study', image: blueImg, x: 2559, y: 3700, w: 190, h: 257 },
+  { id: 'p-10-8-162', title: 'Graphic Still Life', image: symbolsImg, x: 2857, y: 3727, w: 265, h: 196 },
+];
 
-  { id: 't1-c2-top-blue', title: 'Blue Header Form', image: blueImg, x: 1110, y: 100, w: 150, h: V(150) },
-  { id: 't1-c2-abstract', title: 'Abstract Ochre', image: abstractImg, x: 1020, y: 100 + V(150) + 10, w: 320, h: H(320) },
-  { id: 't1-c2-grass', title: 'Botanical Foliage', image: grassImg, x: 1020, y: 100 + V(150) + 10 + H(320) + 10, w: 240, h: V(240) },
-  { id: 't1-c2-shades', title: 'Shades Study', image: shadesImg, x: 1270, y: 100 + V(150) + 10 + H(320) + 10, w: 220, h: V(220) },
-  { id: 't1-c2-birds', title: 'Celestial Birds', image: starsAndBirdsImg, x: 1350, y: 120, w: 220, h: V(220) },
-  { id: 't1-c2-cat', title: 'Feline in Vase', image: catPaintingImg, x: 1580, y: 120, w: 200, h: V(200) },
-  { id: 't1-c2-mount', title: 'Alpine Peak', image: mountImg, x: 1580, y: 120 + V(200) + 10, w: 320, h: H(320) },
-  { id: 't1-c2-dancing', title: 'Dancing Solitude', image: dancingGirlImg, x: 1270, y: 100 + V(150) + 10 + H(320) + 10 + V(220) + 10, w: 260, h: H(260) },
-  { id: 't1-c2-blue-grass', title: 'Blue Grass Melody', image: blueGrassImg, x: 1540, y: 120 + V(200) + 10 + H(320) + 10, w: 280, h: H(280) },
+const WALL_BOUNDS = { minX: 71, maxX: 3849, minY: 100, maxY: 3984 };
 
-  { id: 't1-c3-friends', title: 'Friends Horizon', image: friendsImg, x: 2150, y: 100, w: 320, h: H(320) },
-  { id: 't1-c3-shades', title: 'Shades Crimson', image: shadesImg, x: 2230, y: 100 + H(320) + 10, w: 240, h: V(240) },
-  { id: 't1-c3-blue', title: 'Cobalt Curve', image: blueImg, x: 2040, y: 100 + H(320) + 10, w: 180, h: V(180) },
-  { id: 't1-c3-birds', title: 'Stars and Birds', image: starsAndBirdsImg, x: 2480, y: 100, w: 220, h: V(220) },
-  { id: 't1-c3-feline', title: 'Yellow Feline', image: catPaintingImg, x: 2480, y: 100 + V(220) + 10, w: 180, h: V(180) },
-  { id: 't1-c3-mount', title: 'Mountain Peak', image: mountImg, x: 2480, y: 100 + V(220) + 10 + V(180) + 10, w: 320, h: H(320) },
-  { id: 't1-c3-curly', title: 'Curly Silhouette', image: curlyLadyImg, x: 2810, y: 100, w: 230, h: V(230) },
-
-  { id: 't1-c4-curly', title: 'Striped Silhouette', image: curlyLadyImg, x: 3100, y: 100, w: 240, h: V(240) },
-  { id: 't1-c4-blue', title: 'Blue Edge Form', image: blueImg, x: 3100, y: 100 + V(240) + 10, w: 240, h: V(240) },
-  { id: 't1-c4-green-wall', title: 'Green Wall Pattern', image: greenWallImg, x: 3350, y: 120, w: 220, h: V(220) },
-  { id: 't1-c4-corner-blue', title: 'Corner Blue', image: blueImg, x: 3580, y: 150, w: 70, h: V(70) },
-  { id: 't1-c4-dancing', title: 'Dancing Figure', image: dancingGirlImg, x: 3350, y: 120 + V(220) + 10, w: 220, h: H(220) },
-  { id: 't1-c4-symbols', title: 'Still Life Ochre', image: symbolsImg, x: 3350, y: 120 + V(220) + 10 + H(220) + 10, w: 200, h: H(200) },
-  { id: 't1-c4-blue-grass', title: 'Blue Grass Still Life', image: blueGrassImg, x: 3350, y: 120 + V(220) + 10 + H(220) + 10 + H(200) + 10, w: 280, h: H(280) },
-
-  { id: 't1-c5-lady-green', title: 'Lady in Emerald', image: greenLadyImg, x: 3950, y: 100, w: 230, h: V(230) },
-  { id: 't1-c5-blue-accent', title: 'Cobalt Portal', image: blueImg, x: 4190, y: 100, w: 160, h: V(160) },
-  { id: 't1-c5-mount', title: 'Crested Summit', image: mountImg, x: 4190, y: 100 + V(160) + 10, w: 300, h: H(300) },
-  { id: 't1-c5-birds', title: 'Avian Flight', image: starsAndBirdsImg, x: 4500, y: 100, w: 220, h: V(220) },
-  { id: 't1-c5-tiny-blue', title: 'Mini Azure', image: blueImg, x: 4730, y: 140, w: 70, h: V(70) },
-  { id: 't1-c5-friends', title: 'Twilight Reunion', image: friendsImg, x: 3950, y: 550, w: 310, h: H(310) },
-  { id: 't1-c5-shades', title: 'Crimson Rhythm', image: shadesImg, x: 3950, y: 550 + H(310) + 10, w: 240, h: V(240) },
-  { id: 't1-c5-horse', title: 'Galloping Form', image: horseImg, x: 4270, y: 550, w: 270, h: H(270) },
-  { id: 't1-c5-feline', title: 'Cat and Blossom', image: catPaintingImg, x: 4550, y: 550, w: 210, h: V(210) },
-  { id: 't1-c5-blue-grass', title: 'Verdant Horizon', image: blueGrassImg, x: 4480, y: 550 + V(210) + 10, w: 280, h: H(280) },
-
-  // =========================================================================
-  // TIER 2 (MID-HIGH SALONS) — Y: 1250 to 2150
-  // =========================================================================
-  { id: 't2-c1-abstract', title: 'Abstract Vista', image: abstractImg, x: 100, y: 1250, w: 320, h: H(320) },
-  { id: 't2-c1-grass', title: 'Meadow Study', image: grassImg, x: 100, y: 1250 + H(320) + 10, w: 240, h: V(240) },
-  { id: 't2-c1-blue', title: 'Cobalt Horizon', image: blueImg, x: 350, y: 1250 + H(320) + 10, w: 180, h: V(180) },
-  { id: 't2-c1-coat', title: 'Spotted Pattern', image: coatImg, x: 100, y: 1250 + H(320) + 10 + V(240) + 10, w: 250, h: H(250) },
-  { id: 't2-c1-lady-book', title: 'Reader in Ochre', image: ladyWithBookImg, x: 360, y: 1760, w: 180, h: V(180) },
-  { id: 't2-c1-symbols', title: 'Modern Still Life', image: symbolsImg, x: 550, y: 1760, w: 200, h: H(200) },
-
-  { id: 't2-c2-green-wall', title: 'Botanical Geometry', image: greenWallImg, x: 1100, y: 1250, w: 220, h: V(220) },
-  { id: 't2-c2-friends', title: 'Companions', image: friendsImg, x: 1330, y: 1250, w: 310, h: H(310) },
-  { id: 't2-c2-shades', title: 'Crimson Arc', image: shadesImg, x: 1330, y: 1250 + H(310) + 10, w: 240, h: V(240) },
-  { id: 't2-c2-dancing', title: 'Figure in Motion', image: dancingGirlImg, x: 1650, y: 1250, w: 240, h: H(240) },
-  { id: 't2-c2-horse', title: 'Running Steed', image: horseImg, x: 1650, y: 1250 + H(240) + 10, w: 260, h: H(260) },
-  { id: 't2-c2-feline', title: 'Yellow Feline II', image: catPaintingImg, x: 1650, y: 1250 + H(240) + 10 + H(260) + 10, w: 190, h: V(190) },
-
-  { id: 't2-c3-birds', title: 'Flight Patterns', image: starsAndBirdsImg, x: 2200, y: 1250, w: 240, h: V(240) },
-  { id: 't2-c3-mount', title: 'High Summit', image: mountImg, x: 2450, y: 1250, w: 310, h: H(310) },
-  { id: 't2-c3-blue', title: 'Cobalt Form II', image: blueImg, x: 2450, y: 1250 + H(310) + 10, w: 220, h: V(220) },
-  { id: 't2-c3-curly', title: 'Striped Silhouette II', image: curlyLadyImg, x: 2680, y: 1250 + H(310) + 10, w: 230, h: V(230) },
-
-  { id: 't2-c4-grass', title: 'Tall Grass', image: grassImg, x: 3150, y: 1250, w: 240, h: V(240) },
-  { id: 't2-c4-blue-grass', title: 'Azure Meadow', image: blueGrassImg, x: 3400, y: 1250, w: 280, h: H(280) },
-  { id: 't2-c4-dancing', title: 'Joyful Figure', image: dancingGirlImg, x: 3400, y: 1250 + H(280) + 10, w: 250, h: H(250) },
-  { id: 't2-c4-green-lady', title: 'Emerald Lady II', image: greenLadyImg, x: 3150, y: 1250 + V(240) + 10, w: 220, h: V(220) },
-
-  { id: 't2-c5-coat', title: 'Dark Coat Study', image: coatImg, x: 4000, y: 1250, w: 260, h: H(260) },
-  { id: 't2-c5-abstract', title: 'Prismatic Landscape', image: abstractImg, x: 4270, y: 1250, w: 300, h: H(300) },
-  { id: 't2-c5-feline', title: 'Window Cat', image: catPaintingImg, x: 4000, y: 1250 + H(260) + 10, w: 200, h: V(200) },
-  { id: 't2-c5-lady-book', title: 'Reader Study', image: ladyWithBookImg, x: 4210, y: 1250 + H(300) + 10, w: 180, h: V(180) },
-  { id: 't2-c5-symbols', title: 'Table Composition', image: symbolsImg, x: 4400, y: 1250 + H(300) + 10, w: 200, h: H(200) },
-
-  // =========================================================================
-  // TIER 3: GRAND CENTRAL GALLERY — USER'S HERO PAVILION AT CENTER (Y: 2250 to 3250)
-  // =========================================================================
-  { id: 'hero-top-accent-blue', title: 'Azure Echo', image: blueImg, x: 2270, y: 2280, w: 150, h: V(150) },
-  { id: 'hero-horizontal', title: 'Friends Horizon', image: friendsImg, x: 2180, y: 2500, w: 320, h: H(320) }, // 10px gap below accent blue
-  { id: 'hero-left-blue', title: 'Cobalt Curve', image: blueImg, x: 2070, y: 2500 + H(320) + 10, w: 180, h: V(180) }, // 10px gap left of hero-red
-  { id: 'hero-red', title: 'Shades Crimson', image: shadesImg, x: 2260, y: 2500 + H(320) + 10, w: 240, h: V(240) }, // 10px gap below hero-horizontal
-  { id: 'hero-tiny-blue', title: 'Mini Cobalt', image: blueImg, x: 2420, y: 2500 + H(320) + 10 + V(240) + 10, w: 80, h: V(80) }, // 10px gap below hero-red
-  { id: 'hero-horse', title: 'Horse Study', image: horseImg, x: 2240, y: 2500 + H(320) + 10 + V(240) + 10 + V(80) + 10, w: 260, h: H(260) }, // 10px gap below tiny-blue
-  { id: 'hero-upper-red', title: 'Stars and Birds', image: starsAndBirdsImg, x: 2510, y: 2340, w: 220, h: V(220) }, // 10px gap right of hero center
-  { id: 'hero-mid-yellow', title: 'Yellow Feline', image: catPaintingImg, x: 2510, y: 2340 + V(220) + 10, w: 180, h: V(180) }, // 10px gap below upper-red
-  { id: 'hero-bot-mount', title: 'Mountain Peak', image: mountImg, x: 2510, y: 2340 + V(220) + 10 + V(180) + 10, w: 320, h: H(320) }, // 10px gap below mid-yellow
-  { id: 'hero-top-pink', title: 'Curly Silhouette', image: curlyLadyImg, x: 2850, y: 2320, w: 230, h: V(230) },
-  { id: 'hero-mid-blue', title: 'Blue Edge Form', image: blueImg, x: 2850, y: 2320 + V(230) + 10, w: 230, h: V(230) },
-
-  { id: 't3-left-green-lady', title: 'Emerald Lady III', image: greenLadyImg, x: 100, y: 2350, w: 220, h: V(220) },
-  { id: 't3-left-blue', title: 'Cobalt Portal', image: blueImg, x: 330, y: 2350, w: 160, h: V(160) },
-  { id: 't3-left-abstract', title: 'Horizon Glow', image: abstractImg, x: 550, y: 2350, w: 310, h: H(310) },
-  { id: 't3-left-lady-book', title: 'Quiet Reader', image: ladyWithBookImg, x: 100, y: 2350 + V(220) + 10, w: 180, h: V(180) },
-  { id: 't3-left-symbols', title: 'Ochre Study', image: symbolsImg, x: 330, y: 2350 + V(160) + 10, w: 200, h: H(200) },
-  { id: 't3-left-grass', title: 'Wild Botanical', image: grassImg, x: 550, y: 2350 + H(310) + 10, w: 240, h: V(240) },
-
-  { id: 't3-midl-coat', title: 'Polka Garment', image: coatImg, x: 1100, y: 2350, w: 250, h: H(250) },
-  { id: 't3-midl-dancing', title: 'Solo Dancer', image: dancingGirlImg, x: 1360, y: 2350, w: 240, h: H(240) },
-  { id: 't3-midl-mount', title: 'Alpine Ridge', image: mountImg, x: 1610, y: 2350, w: 300, h: H(300) },
-  { id: 't3-midl-feline', title: 'Cat Portrait', image: catPaintingImg, x: 1100, y: 2350 + H(250) + 10, w: 190, h: V(190) },
-  { id: 't3-midl-green-wall', title: 'Emerald Grid', image: greenWallImg, x: 1300, y: 2350 + H(240) + 10, w: 220, h: V(220) },
-
-  { id: 't3-midr-green-wall', title: 'Foliage Form', image: greenWallImg, x: 3200, y: 2350, w: 220, h: V(220) },
-  { id: 't3-midr-corner-blue', title: 'Corner Azure', image: blueImg, x: 3430, y: 2380, w: 70, h: V(70) },
-  { id: 't3-midr-dancing', title: 'Dancer Study', image: dancingGirlImg, x: 3200, y: 2350 + V(220) + 10, w: 220, h: H(220) },
-  { id: 't3-midr-symbols', title: 'Still Life Graphic', image: symbolsImg, x: 3200, y: 2350 + V(220) + 10 + H(220) + 10, w: 200, h: H(200) },
-  { id: 't3-midr-blue-grass', title: 'Blue Grass Melody', image: blueGrassImg, x: 3200, y: 2350 + V(220) + 10 + H(220) + 10 + H(200) + 10, w: 280, h: H(280) },
-  { id: 't3-midr-curly', title: 'Silhouette Profile', image: curlyLadyImg, x: 3500, y: 2350, w: 240, h: V(240) },
-
-  { id: 't3-far-right-lady', title: 'Emerald Figure', image: greenLadyImg, x: 3950, y: 2350, w: 230, h: V(230) },
-  { id: 't3-far-right-blue', title: 'Deep Cobalt Portal', image: blueImg, x: 4190, y: 2350, w: 160, h: V(160) },
-  { id: 't3-far-right-mount', title: 'Crested Ridge', image: mountImg, x: 4190, y: 2350 + V(160) + 10, w: 300, h: H(300) },
-  { id: 't3-far-right-birds', title: 'Soaring Flock', image: starsAndBirdsImg, x: 4500, y: 2350, w: 220, h: V(220) },
-  { id: 't3-far-right-tiny', title: 'Accent Azure', image: blueImg, x: 4730, y: 2390, w: 70, h: V(70) },
-
-  // =========================================================================
-  // TIER 4 (MID-LOW PAVILIONS) — Y: 3400 to 4150
-  // =========================================================================
-  { id: 't4-c1-horse', title: 'Steed in Motion', image: horseImg, x: 100, y: 3400, w: 260, h: H(260) },
-  { id: 't4-c1-cat', title: 'Ochre Feline', image: catPaintingImg, x: 420, y: 3400, w: 190, h: V(190) },
-  { id: 't4-c1-mount', title: 'Glacier Crest', image: mountImg, x: 620, y: 3400, w: 300, h: H(300) },
-  { id: 't4-c1-friends', title: 'Two Companions', image: friendsImg, x: 100, y: 3400 + H(260) + 10, w: 310, h: H(310) },
-  { id: 't4-c1-shades', title: 'Crimson Sunset', image: shadesImg, x: 100, y: 3400 + H(260) + 10 + H(310) + 10, w: 240, h: V(240) },
-
-  { id: 't4-c2-blue', title: 'Cobalt Arch', image: blueImg, x: 1100, y: 3400, w: 160, h: V(160) },
-  { id: 't4-c2-abstract', title: 'Color Field', image: abstractImg, x: 1270, y: 3400, w: 310, h: H(310) },
-  { id: 't4-c2-birds', title: 'Evening Birds', image: starsAndBirdsImg, x: 1590, y: 3400, w: 220, h: V(220) },
-  { id: 't4-c2-grass', title: 'Foliage Arc', image: grassImg, x: 1270, y: 3400 + H(310) + 10, w: 230, h: V(230) },
-  { id: 't4-c2-coat', title: 'Coat in Repose', image: coatImg, x: 1510, y: 3400 + V(220) + 10, w: 240, h: H(240) },
-
-  { id: 't4-c3-green-wall', title: 'Green Lattice', image: greenWallImg, x: 2150, y: 3450, w: 220, h: V(220) },
-  { id: 't4-c3-friends', title: 'Friends in Crimson', image: friendsImg, x: 2380, y: 3450, w: 300, h: H(300) },
-  { id: 't4-c3-dancing', title: 'Fluid Dance', image: dancingGirlImg, x: 2690, y: 3450, w: 240, h: H(240) },
-  { id: 't4-c3-shades', title: 'Deep Crimson Field', image: shadesImg, x: 2380, y: 3450 + H(300) + 10, w: 240, h: V(240) },
-  { id: 't4-c3-blue-grass', title: 'Azure Meadow II', image: blueGrassImg, x: 2690, y: 3450 + H(240) + 10, w: 270, h: H(270) },
-
-  { id: 't4-c4-curly', title: 'Striped Silhouette III', image: curlyLadyImg, x: 3150, y: 3400, w: 230, h: V(230) },
-  { id: 't4-c4-mount', title: 'Mountain Pass', image: mountImg, x: 3390, y: 3400, w: 310, h: H(310) },
-  { id: 't4-c4-blue', title: 'Cobalt Window', image: blueImg, x: 3710, y: 3400, w: 170, h: V(170) },
-  { id: 't4-c4-symbols', title: 'Graphic Geometry', image: symbolsImg, x: 3390, y: 3400 + H(310) + 10, w: 200, h: H(200) },
-  { id: 't4-c4-cat', title: 'Quiet Feline', image: catPaintingImg, x: 3600, y: 3400 + H(310) + 10, w: 190, h: V(190) },
-
-  { id: 't4-c5-green-lady', title: 'Emerald Robe', image: greenLadyImg, x: 4100, y: 3400, w: 220, h: V(220) },
-  { id: 't4-c5-lady-book', title: 'Reading Solitude II', image: ladyWithBookImg, x: 4330, y: 3400, w: 180, h: V(180) },
-  { id: 't4-c5-horse', title: 'Field Horse', image: horseImg, x: 4520, y: 3400, w: 260, h: H(260) },
-  { id: 't4-c5-coat', title: 'Draped Robe', image: coatImg, x: 4330, y: 3400 + V(180) + 10, w: 240, h: H(240) },
-
-  // =========================================================================
-  // TIER 5 (BOTTOM ATELIERS) — Y: 4350 to 4877
-  // =========================================================================
-  { id: 't5-c1-abstract', title: 'Prismatic Vista II', image: abstractImg, x: 100, y: 4350, w: 320, h: H(320) },
-  { id: 't5-c1-grass', title: 'Summer Flora', image: grassImg, x: 430, y: 4350, w: 230, h: V(230) },
-  { id: 't5-c1-blue', title: 'Azure Curve', image: blueImg, x: 670, y: 4350, w: 160, h: V(160) },
-  { id: 't5-c1-dancing', title: 'Evening Dance', image: dancingGirlImg, x: 100, y: 4350 + H(320) + 10, w: 250, h: H(250) },
-
-  { id: 't5-c2-green-wall', title: 'Geometric Wall', image: greenWallImg, x: 1100, y: 4350, w: 220, h: V(220) },
-  { id: 't5-c2-friends', title: 'Horizon Pair', image: friendsImg, x: 1330, y: 4350, w: 300, h: H(300) },
-  { id: 't5-c2-mount', title: 'Alpine Peak II', image: mountImg, x: 1640, y: 4350, w: 310, h: H(310) },
-
-  { id: 't5-c3-shades', title: 'Crimson Duet', image: shadesImg, x: 2200, y: 4350, w: 240, h: V(240) },
-  { id: 't5-c3-birds', title: 'Night Birds', image: starsAndBirdsImg, x: 2450, y: 4350, w: 220, h: V(220) },
-  { id: 't5-c3-cat', title: 'Feline in Solitude', image: catPaintingImg, x: 2680, y: 4350, w: 190, h: V(190) },
-  { id: 't5-c3-horse', title: 'Nocturne Steed', image: horseImg, x: 2200, y: 4350 + V(240) + 10, w: 260, h: H(260) },
-
-  { id: 't5-c4-curly', title: 'Striped Silhouette IV', image: curlyLadyImg, x: 3200, y: 4350, w: 230, h: V(230) },
-  { id: 't5-c4-blue-grass', title: 'Blue Grass Study', image: blueGrassImg, x: 3440, y: 4350, w: 280, h: H(280) },
-  { id: 't5-c4-coat', title: 'Night Coat', image: coatImg, x: 3440, y: 4350 + H(280) + 10, w: 240, h: H(240) },
-
-  { id: 't5-c5-lady-green', title: 'Lady in Verdant', image: greenLadyImg, x: 4100, y: 4350, w: 220, h: V(220) },
-  { id: 't5-c5-blue-accent', title: 'Cobalt Portal II', image: blueImg, x: 4330, y: 4350, w: 160, h: V(160) },
-  { id: 't5-c5-symbols', title: 'Still Life Finale', image: symbolsImg, x: 4500, y: 4350, w: 200, h: H(200) },
-  { id: 't5-c5-mount', title: 'Sunset Peak', image: mountImg, x: 4330, y: 4350 + V(160) + 10, w: 300, h: H(300) },
-]
-
-// Bounding box of the grand square master wall (~4740px width x ~4777px height)
-const WALL_BOUNDS = {
-  minX: 60,
-  maxX: 4800, // rightmost edge
-  minY: 100,
-  maxY: 4877, // bottom-most edge (y: 4350 + h: 527)
-}
-
-// Generous finish-line margins ensuring NO painting is ever cut off at the finish points
 const FINISH_PADDING = {
   left: 90,   // Breathing room from screen left edge
   right: 90,  // Breathing room from screen right edge
@@ -271,8 +242,8 @@ function App() {
     let limits = getDragLimits()
 
     // 2. Position canvas centered on the Grand Hero Pavilion (Tier 3 Center) on initial load
-    const centerClusterX = 2390
-    const centerClusterY = 2750
+    const centerClusterX = 1960
+    const centerClusterY = 2042
     let initialX = window.innerWidth / 2 - centerClusterX
     let initialY = window.innerHeight / 2 - centerClusterY
 
