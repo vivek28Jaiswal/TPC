@@ -25,8 +25,57 @@ import symbolsImg from './assets/image-paintings/symbols.png'
 
 // Helpers for authentic aspect-ratio dimensions
 // Horizontal assets are naturally 260x192; Vertical assets are naturally 260x352
-const H = (w) => Math.round((w * 192) / 260)
-const V = (w) => Math.round((w * 352) / 260)
+const _H = (w) => Math.round((w * 192) / 260)
+const _V = (w) => Math.round((w * 352) / 260)
+
+function DragIcon(props) {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M19 7.92969V16.5011C19 19.0011 17.4 20.5011 15 20.5011H10.3789C9.81826 20.5011 9.28432 20.2658 8.9055 19.8526L5.1216 15.7247C4.47127 15.0152 4.41845 13.9432 4.99591 13.1732L7 10.5011"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        stroke="currentColor"
+      />
+      <path
+        d="M16 8.49665V7.92522C16 5.63951 19 5.63951 19 7.92522"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        stroke="currentColor"
+      />
+      <path
+        d="M16 8.49971V7.92828V7.02679C16 4.74107 13 4.74107 13 7.02679M13 6.49971V7.02679M13 7.02679V8.49971"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        stroke="currentColor"
+      />
+      <path
+        d="M10 8.50335V6.50335C10 4.21763 13 4.21763 13 6.50335V7.03042V8.50335"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        stroke="currentColor"
+      />
+      <path
+        d="M7 13.5027V6.50275C7 5.67432 7.67157 5.00275 8.5 5.00275C9.32843 5.00275 10 5.55795 10 6.38638V6.50275V8.50275"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        stroke="currentColor"
+      />
+    </svg>
+  )
+}
 
 // Expansive 5-tier x 5-column square gallery wall (~4800px width x ~4800px height)
 // Exactly 10px gaps within clusters, 0 overlaps, and complete authentic frames
@@ -481,6 +530,12 @@ function App() {
           ))}
         </div>
       </main>
+
+      {/* 4. Drag to Explore Floating Indicator (Center Bottom) */}
+      <aside className="drag-explore-indicator" aria-label="Exploration instruction">
+        <DragIcon className="drag-icon" />
+        <span className="drag-text">Drag to explore</span>
+      </aside>
     </div>
   )
 }

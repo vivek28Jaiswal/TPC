@@ -47,8 +47,7 @@
   font-weight: 700;
   font-size: 16px;
   line-height: 1;
-  letter-spacing: -2px;
-  word-spacing: 8px;
+  letter-spacing: -0.8px;
   color: #000000;
   margin: 0;
   text-transform: uppercase;
@@ -74,8 +73,7 @@
   font-family: 'Geist', sans-serif;
   font-weight: 500;
   font-size: 14px;
-  letter-spacing: -2px;
-  word-spacing: 4px;
+  letter-spacing: -0.8px;
   cursor: pointer;
   line-height: 1.2;
 }
@@ -89,8 +87,7 @@
   font-family: 'Geist', sans-serif;
   font-weight: 500;
   font-size: 14px;
-  letter-spacing: -2px;
-  word-spacing: 4px;
+  letter-spacing: -0.8px;
   cursor: pointer;
   line-height: 1.2;
 }
@@ -159,3 +156,37 @@
   -webkit-user-drag: none;
   pointer-events: none;
 }
+
+/* 4. Drag to Explore Floating Indicator */
+.drag-explore-indicator {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  z-index: 45;
+  pointer-events: none;
+  user-select: none;
+  /* Color difference effect: inverts over wall and sliding paintings */
+  color: #FFFFFF;
+  mix-blend-mode: difference;
+}
+
+.drag-icon {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+.drag-text {
+  font-family: 'Geist', sans-serif;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 1.2;
+  letter-spacing: -0.8px;
+  white-space: nowrap;
+}
+
