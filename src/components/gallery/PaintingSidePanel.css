@@ -1,0 +1,775 @@
+/* ==========================================================================
+   PaintingSidePanel Component Styles
+   Pixel-perfect Scandinavian Danish Gallery Panel (The Poster Club)
+   Signature kinetic slide-in from the left with cubic-bezier(0.76, 0, 0.24, 1)
+   ========================================================================== */
+
+/* Ambient Backdrop Overlay */
+.panel-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(0.5px);
+  z-index: 68;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition: opacity 0.5s cubic-bezier(0.76, 0, 0.24, 1),
+              visibility 0s linear 0.5s;
+}
+
+.panel-backdrop.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+  transition: opacity 0.4s cubic-bezier(0.76, 0, 0.24, 1),
+              visibility 0s linear 0s;
+}
+
+/* Main Sliding Side Panel Container
+   Pixel-perfect proportion: 48.6vw on desktop matching Design Reference 3 */
+.painting-side-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 48.6vw;
+  min-width: 530px;
+  max-width: 680px;
+  height: 100vh;
+  background-color: #F0F0F0; /* Authentic Scandinavian warm light gray */
+  z-index: 70;
+  box-shadow: 12px 0 35px rgba(0, 0, 0, 0.09), 4px 0 12px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  will-change: transform;
+  transition: transform 0.65s cubic-bezier(0.76, 0, 0.24, 1),
+              visibility 0s linear 0s;
+}
+
+.painting-side-panel.is-closed {
+  transform: translate3d(-100%, 0, 0);
+  visibility: hidden;
+  transition: transform 0.65s cubic-bezier(0.76, 0, 0.24, 1),
+              visibility 0s linear 0.65s;
+  pointer-events: none;
+}
+
+.painting-side-panel.is-open {
+  transform: translate3d(0, 0, 0);
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* Inner Scrollable Container */
+.panel-scroll-container {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Sleek Minimal Scrollbar */
+.panel-scroll-container::-webkit-scrollbar {
+  width: 5px;
+}
+
+.panel-scroll-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.panel-scroll-container::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.12);
+  border-radius: 9999px;
+}
+
+.panel-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+/* ==========================================================================
+   1. TOP SHOWCASE STAGE
+   - Bestseller badge docked top-left (left: 30px, top: 24px)
+   - Main oak-framed painting horizontally centered (exact symmetry)
+   - 4-thumbnail stack docked far right (right: 30px, top: 24px)
+   - Square black close button positioned at top-right of thumbnail 1
+   ========================================================================== */
+.panel-showcase-stage {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 24px 30px 12px 30px;
+  box-sizing: border-box;
+}
+
+/* Bestseller Badge Container */
+.panel-badge-wrap {
+  position: absolute;
+  top: 24px;
+  left: 30px;
+  z-index: 5;
+}
+
+.panel-badge {
+  background-color: #555354;
+  color: #FFFFFF;
+  font-family: 'Geist', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 11px;
+  border-radius: 9999px;
+  letter-spacing: -0.2px;
+  display: inline-block;
+  line-height: 1.2;
+  user-select: none;
+}
+
+/* Main Framed Art Showcase - Centered Horizontally */
+.panel-main-frame {
+  width: 284px;
+  height: 350px;
+  border: 2px solid #C4A482; /* Natural Scandinavian oak frame */
+  border-radius: 2px;
+  background-color: #FFFFFF;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  position: relative;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  margin: 0 auto;
+}
+
+.panel-frame-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.4s ease;
+}
+
+.panel-main-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+  transition: transform 0.4s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+/* View Modes for Dynamic Cropping & Detail */
+.view-mode-0 .panel-main-image {
+  transform: scale(1);
+}
+
+.view-mode-1 .panel-main-image {
+  transform: scale(1.15) rotate(0.8deg);
+}
+
+.view-mode-2 .panel-main-image {
+  transform: scale(1.75) translate(-6%, -5%);
+}
+
+.view-mode-3 .panel-main-image {
+  transform: scale(1.45) translate(6%, 8%);
+}
+
+/* Right Thumbnails Column Docked at Right Edge */
+.panel-thumbs-column {
+  position: absolute;
+  top: 24px;
+  right: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 68px;
+  z-index: 10;
+}
+
+/* Thumbnail 1 Slot with Overlaid Black Close Button */
+.panel-thumb-wrapper {
+  position: relative;
+  width: 68px;
+  height: 68px;
+}
+
+/* Black Square Close Button (Pixel-perfect match to Design Reference) */
+.panel-close-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 34px;
+  height: 34px;
+  background-color: #000000;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 2px;
+  z-index: 12;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.15s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  padding: 0;
+}
+
+.panel-close-btn:hover {
+  opacity: 0.85;
+  transform: scale(1.04);
+}
+
+/* Thumbnail Buttons */
+.panel-thumb-btn {
+  width: 68px;
+  height: 68px;
+  border-radius: 2px;
+  overflow: hidden;
+  background-color: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  display: block;
+  box-sizing: border-box;
+  position: relative;
+  transition: border-color 0.2s ease, transform 0.15s ease;
+}
+
+.panel-thumb-btn:hover {
+  border-color: #000000;
+}
+
+.panel-thumb-btn.is-active {
+  border: 1.5px solid #000000;
+}
+
+.panel-thumb-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  user-select: none;
+}
+
+.thumb-crop-0 {
+  transform: scale(1);
+}
+
+.thumb-crop-1 {
+  transform: scale(1.15) rotate(1deg);
+}
+
+.thumb-crop-2 {
+  transform: scale(1.7);
+}
+
+.thumb-crop-3 {
+  transform: scale(1.4) translate(5%, 5%);
+}
+
+/* ==========================================================================
+   2. CONTENT INFORMATION & PURCHASE SECTION
+   Flush left/right alignment to 30px margins
+   ========================================================================== */
+.panel-info-section {
+  padding: 12px 30px 28px 30px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Title & Artist Row with Bare Minimalist Wishlist Heart */
+.panel-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+  gap: 16px;
+}
+
+.panel-title-col {
+  flex: 1;
+  min-width: 0;
+}
+
+.panel-title {
+  font-family: 'Geist', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.6px;
+  color: #000000;
+  line-height: 1.25;
+  margin: 0 0 2px 0;
+}
+
+.panel-artist {
+  font-family: 'Geist', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: -0.4px;
+  color: #666666;
+  margin: 0;
+  line-height: 1.3;
+}
+
+/* Bare Minimalist Wishlist Heart (No border box, transparent background) */
+.panel-wishlist-btn {
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  margin: 2px 0 0 0;
+  flex-shrink: 0;
+  color: #000000;
+  transition: transform 0.2s cubic-bezier(0.76, 0, 0.24, 1), opacity 0.2s ease;
+}
+
+.panel-wishlist-btn:hover {
+  opacity: 0.7;
+  transform: scale(1.12);
+}
+
+.panel-wishlist-btn.is-liked svg {
+  fill: #000000;
+}
+
+/* Price */
+.panel-price {
+  font-family: 'Geist', sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.8px;
+  color: #000000;
+  margin-bottom: 12px;
+  line-height: 1;
+}
+
+/* Description Section with Collapsible Extended Text */
+.panel-desc-wrap {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 14px;
+}
+
+.panel-desc-p1 {
+  font-family: 'Geist', sans-serif;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #555555;
+  letter-spacing: -0.2px;
+  margin: 0 0 8px 0;
+}
+
+.panel-desc-p2 {
+  font-family: 'Geist', sans-serif;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #555555;
+  letter-spacing: -0.2px;
+  margin: 0 0 8px 0;
+}
+
+.animate-fade-in {
+  animation: panelFadeIn 0.35s cubic-bezier(0.76, 0, 0.24, 1) both;
+}
+
+@keyframes panelFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* "Read More" <-> "Close" Link */
+.panel-expand-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0 0 2px 0;
+  font-family: 'Geist', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: #111111;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  align-self: flex-start;
+  transition: opacity 0.15s ease;
+}
+
+.panel-expand-btn:hover {
+  opacity: 0.7;
+}
+
+/* ==========================================================================
+   3. SIZE SELECTOR SECTION
+   ========================================================================== */
+.panel-size-section {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2px;
+  position: relative;
+}
+
+.panel-size-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 7px;
+}
+
+.panel-size-label {
+  font-family: 'Geist', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.4px;
+  color: #000000;
+}
+
+.panel-size-guide-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: 'Geist', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: -0.4px;
+  color: #000000;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.panel-size-guide-btn:hover {
+  opacity: 0.7;
+}
+
+/* Size Selector Dropdown Box (1px Black Border, White Background) */
+.panel-size-dropdown-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.panel-size-selector-btn {
+  width: 100%;
+  height: 44px;
+  background-color: #FFFFFF;
+  border: 1px solid #000000;
+  border-radius: 2px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  box-sizing: border-box;
+  cursor: pointer;
+  font-family: 'Geist', sans-serif;
+  transition: background-color 0.15s ease;
+}
+
+.panel-size-selector-btn:hover {
+  background-color: #FAFAFA;
+}
+
+.panel-size-name {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  color: #000000;
+}
+
+.panel-size-price-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.panel-size-price {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.3px;
+  color: #000000;
+}
+
+.panel-size-chevron {
+  display: block;
+  transition: transform 0.25s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.panel-size-chevron.is-rotated {
+  transform: rotate(180deg);
+}
+
+/* Dropdown Menu Options */
+.panel-size-options {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  width: 100%;
+  background-color: #FFFFFF;
+  border: 1px solid #000000;
+  border-radius: 2px;
+  z-index: 25;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-size-option {
+  width: 100%;
+  height: 40px;
+  background: none;
+  border: none;
+  padding: 0 16px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-family: 'Geist', sans-serif;
+  transition: background-color 0.15s ease;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.panel-size-option:last-child {
+  border-bottom: none;
+}
+
+.panel-size-option:hover {
+  background-color: #F5F5F5;
+}
+
+.panel-size-option.is-selected {
+  background-color: #EEEEEE;
+}
+
+.option-name {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  color: #000000;
+}
+
+.option-price {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.3px;
+  color: #000000;
+}
+
+/* Total Row */
+.panel-total-row {
+  margin-top: 14px;
+  margin-bottom: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.panel-total-label {
+  font-family: 'Geist', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: -0.4px;
+  color: #000000;
+}
+
+.panel-total-value {
+  font-family: 'Geist', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.4px;
+  color: #000000;
+}
+
+/* ADD TO BAG Button */
+.panel-add-btn {
+  width: 100%;
+  height: 48px;
+  background-color: #000000;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 2px;
+  font-family: 'Geist', sans-serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: background-color 0.2s ease, opacity 0.2s ease, transform 0.1s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.panel-add-btn:hover {
+  opacity: 0.88;
+}
+
+.panel-add-btn:active {
+  transform: scale(0.99);
+}
+
+.panel-add-btn.is-added {
+  background-color: #2E7D32;
+}
+
+/* ==========================================================================
+   4. SIZE GUIDE MODAL
+   ========================================================================== */
+.size-guide-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.45);
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  animation: modalFadeIn 0.25s ease both;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.size-guide-modal {
+  width: 100%;
+  max-width: 440px;
+  background-color: #FFFFFF;
+  border-radius: 4px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.size-guide-modal-header {
+  padding: 18px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #EEEEEE;
+}
+
+.size-guide-modal-title {
+  font-family: 'Geist', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.4px;
+  color: #000000;
+  margin: 0;
+}
+
+.size-guide-close-btn {
+  background: none;
+  border: none;
+  font-size: 22px;
+  line-height: 1;
+  color: #666666;
+  cursor: pointer;
+  padding: 0;
+}
+
+.size-guide-body {
+  padding: 20px;
+}
+
+.size-guide-intro {
+  font-family: 'Geist', sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #555555;
+  margin: 0 0 16px 0;
+}
+
+.size-guide-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Geist', sans-serif;
+  font-size: 13px;
+}
+
+.size-guide-table th {
+  text-align: left;
+  padding: 8px 6px;
+  font-weight: 600;
+  color: #111111;
+  border-bottom: 1px solid #E0E0E0;
+}
+
+.size-guide-table td {
+  padding: 10px 6px;
+  color: #444444;
+  border-bottom: 1px solid #F0F0F0;
+}
+
+.guide-name {
+  font-weight: 600;
+  color: #000000 !important;
+}
+
+/* ==========================================================================
+   5. RESPONSIVE MOBILE STYLES (< 768px)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .painting-side-panel {
+    width: 100%;
+    min-width: 100vw;
+    max-width: 100vw;
+  }
+
+  .panel-showcase-stage {
+    padding: 20px 20px 14px 20px;
+  }
+
+  .panel-main-frame {
+    width: 210px;
+    height: 270px;
+  }
+
+  .panel-badge-wrap {
+    top: 20px;
+    left: 20px;
+  }
+
+  .panel-thumbs-column {
+    top: 20px;
+    right: 20px;
+    width: 54px;
+    gap: 6px;
+  }
+
+  .panel-thumb-wrapper,
+  .panel-thumb-btn {
+    width: 54px;
+    height: 54px;
+  }
+
+  .panel-close-btn {
+    width: 28px;
+    height: 28px;
+  }
+
+  .panel-info-section {
+    padding: 12px 20px 32px 20px;
+  }
+}

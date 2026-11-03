@@ -10,7 +10,7 @@
   user-select: none;
   pointer-events: auto;
   border-radius: 1px;
-  cursor: grab;
+  cursor: pointer;
   transform-origin: 50% 10%; /* Authentic hanging frame nail pivot */
   will-change: transform;
 }

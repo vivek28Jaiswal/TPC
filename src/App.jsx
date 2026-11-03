@@ -1,15 +1,20 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { HeaderNav } from './components/navigation'
-import { GalleryCanvas, AmbientShadow } from './components/gallery'
+import { GalleryCanvas, AmbientShadow, PaintingSidePanel } from './components/gallery'
 import { DragIndicator } from './components/common'
 import { useClickOutside, useGalleryPhysics } from './hooks'
+import { masterPaintings } from './constants/paintingsData'
 import './App.css'
+
+// Default fallback painting (Carla Llanos / Flowers On Blue Table)
+const defaultPainting =
+  masterPaintings.find((p) => p.title.toLowerCase().includes('abstract')) || masterPaintings[0]
 
 /**
  * Main Application Orchestrator
  *
  * Coordinates top-level interaction states, kinetic physics engine,
- * and composes presentation layers cleanly.
+ * interactive painting side panel drawer, shopping bag, and composes presentation layers cleanly.
  */
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -17,9 +22,29 @@ function App() {
   const [isBagOpen, setIsBagOpen] = useState(false)
   const [activeCategory, setActiveCategory] = useState('shop')
 
+  // Painting side panel & shopping cart states
+  const [selectedPainting, setSelectedPainting] = useState(defaultPainting)
+  const [isSidePanelOpen, setIsSidePanelOpen] = useState(false)
+  const [bagItems, setBagItems] = useState([])
+
   const menuWrapperRef = useRef(null)
   const viewportRef = useRef(null)
   const canvasRef = useRef(null)
+
+  // Listen for openPaintingDetails custom event (from gallery wall or search result)
+  useEffect(() => {
+    const handleOpenPainting = (e) => {
+      if (e.detail) {
+        setSelectedPainting(e.detail)
+        setIsSidePanelOpen(true)
+        setIsMenuOpen(false)
+        setIsSearchOpen(false)
+        setIsBagOpen(false)
+      }
+    }
+    window.addEventListener('openPaintingDetails', handleOpenPainting)
+    return () => window.removeEventListener('openPaintingDetails', handleOpenPainting)
+  }, [])
 
   // Close dropdowns on outside click or Escape key
   useClickOutside(
@@ -31,6 +56,10 @@ function App() {
     },
     isMenuOpen || isSearchOpen || isBagOpen
   )
+
+  const handleAddToBag = (item) => {
+    setBagItems((prev) => [...prev, item])
+  }
 
   // Initialize smooth kinetic momentum physics and bounds damping
   useGalleryPhysics({ viewportRef, canvasRef })
@@ -48,6 +77,8 @@ function App() {
         activeCategory={activeCategory}
         setActiveCategory={setActiveCategory}
         menuWrapperRef={menuWrapperRef}
+        bagCount={bagItems.length}
+        bagItems={bagItems}
       />
 
       {/* 2. Bounded Drag Art Wall Viewport */}
@@ -61,6 +92,14 @@ function App() {
 
       {/* 4. Drag to Explore Floating Indicator */}
       <DragIndicator />
+
+      {/* 5. Smooth Sliding Artwork Details Side Panel (Matches References 1, 2, 3) */}
+      <PaintingSidePanel
+        isOpen={isSidePanelOpen}
+        painting={selectedPainting}
+        onClose={() => setIsSidePanelOpen(false)}
+        onAddToBag={handleAddToBag}
+      />
     </div>
   )
 }

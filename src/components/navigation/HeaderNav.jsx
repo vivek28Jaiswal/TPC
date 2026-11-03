@@ -32,6 +32,8 @@ export function HeaderNav({
   activeCategory,
   setActiveCategory,
   menuWrapperRef,
+  bagCount = 0,
+  bagItems = [],
 }) {
   const handleMenuClick = () => {
     if (setIsSearchOpen) setIsSearchOpen(false)
@@ -114,7 +116,7 @@ export function HeaderNav({
         >
           <span className="btn-bag-label-wrap">
             <span className="btn-bag-slider">
-              <span className="btn-bag-text">BAG (0)</span>
+              <span className="btn-bag-text">BAG ({bagCount})</span>
               <span className="btn-bag-text">Close</span>
             </span>
           </span>
@@ -137,6 +139,7 @@ export function HeaderNav({
         {/* Smooth Expanding Orange Bag Dropdown (Opens Right-to-Left) */}
         <BagDropdown
           isOpen={isBagOpen}
+          bagItems={bagItems}
           onClose={() => setIsBagOpen && setIsBagOpen(false)}
         />
       </nav>

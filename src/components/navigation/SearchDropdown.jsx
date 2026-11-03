@@ -220,9 +220,13 @@ export function SearchDropdown({ isOpen, onClose }) {
     if (closestPlacement) {
       // Smoothly pan canvas to center that painting
       window.dispatchEvent(new CustomEvent('panToPainting', { detail: closestPlacement }))
-      // Trigger luminous highlight halo around targeted artwork
+      // Trigger authentic frame shake on targeted artwork
       window.dispatchEvent(
         new CustomEvent('highlightPainting', { detail: { id: closestPlacement.id } })
+      )
+      // Smoothly open painting side panel details
+      window.dispatchEvent(
+        new CustomEvent('openPaintingDetails', { detail: closestPlacement })
       )
     }
 

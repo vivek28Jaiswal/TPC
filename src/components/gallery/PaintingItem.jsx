@@ -77,6 +77,42 @@ export function PaintingItem({ painting }) {
     )
   }
 
+  // Pointer & Click tracking to differentiate genuine click from canvas dragging
+  const pointerDownRef = useRef({ x: 0, y: 0, time: 0 })
+  const lastOpenTimeRef = useRef(0)
+
+  const triggerOpen = () => {
+    const now = performance.now()
+    if (now - lastOpenTimeRef.current < 250) return // Debounce duplicate events
+    lastOpenTimeRef.current = now
+    window.dispatchEvent(
+      new CustomEvent('openPaintingDetails', { detail: painting })
+    )
+  }
+
+  const handlePointerDown = (e) => {
+    pointerDownRef.current = {
+      x: e.clientX,
+      y: e.clientY,
+      time: performance.now(),
+    }
+  }
+
+  const handlePointerUp = (e) => {
+    const dx = Math.abs(e.clientX - pointerDownRef.current.x)
+    const dy = Math.abs(e.clientY - pointerDownRef.current.y)
+    const dt = performance.now() - pointerDownRef.current.time
+
+    if (dx < 6 && dy < 6 && dt < 450) {
+      triggerOpen()
+    }
+  }
+
+  const handleClick = (e) => {
+    e.stopPropagation()
+    triggerOpen()
+  }
+
   return (
     <figure
       ref={figureRef}
@@ -84,6 +120,9 @@ export function PaintingItem({ painting }) {
       data-painting-id={painting.id}
       data-painting-title={painting.title}
       onPointerEnter={handlePointerEnter}
+      onPointerDown={handlePointerDown}
+      onPointerUp={handlePointerUp}
+      onClick={handleClick}
       style={{
         left: `${painting.x}px`,
         top: `${painting.y}px`,
