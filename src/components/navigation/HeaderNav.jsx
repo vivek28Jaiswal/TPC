@@ -34,6 +34,7 @@ export function HeaderNav({
   menuWrapperRef,
   bagCount = 0,
   bagItems = [],
+  onRemoveFromBag,
 }) {
   const handleMenuClick = () => {
     if (setIsSearchOpen) setIsSearchOpen(false)
@@ -140,6 +141,7 @@ export function HeaderNav({
         <BagDropdown
           isOpen={isBagOpen}
           bagItems={bagItems}
+          onRemoveItem={onRemoveFromBag}
           onClose={() => setIsBagOpen && setIsBagOpen(false)}
         />
       </nav>

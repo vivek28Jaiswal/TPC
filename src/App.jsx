@@ -61,6 +61,10 @@ function App() {
     setBagItems((prev) => [...prev, item])
   }
 
+  const handleRemoveFromBag = (itemId) => {
+    setBagItems((prev) => prev.filter((item) => item.id !== itemId))
+  }
+
   // Initialize smooth kinetic momentum physics and bounds damping
   useGalleryPhysics({ viewportRef, canvasRef })
 
@@ -79,6 +83,7 @@ function App() {
         menuWrapperRef={menuWrapperRef}
         bagCount={bagItems.length}
         bagItems={bagItems}
+        onRemoveFromBag={handleRemoveFromBag}
       />
 
       {/* 2. Bounded Drag Art Wall Viewport */}

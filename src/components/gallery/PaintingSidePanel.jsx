@@ -1,9 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
 import flowersBlueTableImg from '../../assets/image-paintings/flowers-blue-table.png'
-import flowersThumb1 from '../../assets/image-paintings/flowers-thumb-1.png'
-import flowersThumb2 from '../../assets/image-paintings/flowers-thumb-2.png'
-import flowersThumb3 from '../../assets/image-paintings/flowers-thumb-3.png'
-import flowersThumb4 from '../../assets/image-paintings/flowers-thumb-4.png'
 import './PaintingSidePanel.css'
 
 // Available standard art print formats matching The Poster Club catalog
@@ -18,11 +14,13 @@ const SIZES = [
  * PaintingSidePanel Component
  *
  * Pixel-perfect implementation matching the actual design reference:
- * - Soft #F0F0F0 background matching Scandinavian Danish aesthetic
+ * - White #FFFFFF side panel background
+ * - Soft #F6F6F6 showcase stage behind the artwork
  * - Bestseller badge docked at top-left
- * - Main oak-framed painting horizontally centered in the showcase area
- * - 4-thumbnail stack docked at the far right with black square '×' close button on top
- * - Wishlist heart icon, title, artist, large price
+ * - Main framed painting centered cleanly without artificial CSS borders/lines
+ * - 4-thumbnail stack docked at far right; clicked item is 100% opacity, others are 40% opacity
+ * - Black square '×' close button on top-right of thumbnail 1
+ * - Wishlist heart icon in #F6F6F6 rounded square
  * - Collapsible description with "Read More" <-> "Close" toggle
  * - Select Size custom dropdown (1px black border) & Size Guide modal
  * - Total row & full-width black "ADD TO BAG" CTA
@@ -41,6 +39,7 @@ export function PaintingSidePanel({ isOpen, painting, onClose, onAddToBag }) {
   const [isSizeMenuOpen, setIsSizeMenuOpen] = useState(false)
   const [showSizeGuide, setShowSizeGuide] = useState(false)
   const [isAdded, setIsAdded] = useState(false)
+  const [naturalAspect, setNaturalAspect] = useState(null)
 
   const [prevPaintingId, setPrevPaintingId] = useState(painting?.id)
   const panelRef = useRef(null)
@@ -54,6 +53,7 @@ export function PaintingSidePanel({ isOpen, painting, onClose, onAddToBag }) {
     setIsSizeMenuOpen(false)
     setShowSizeGuide(false)
     setIsAdded(false)
+    setNaturalAspect(null)
   }
 
   // Handle outside click for size dropdown
@@ -89,31 +89,41 @@ export function PaintingSidePanel({ isOpen, painting, onClose, onAddToBag }) {
   if (!painting) return null
 
   // Artwork metadata
-  const isCarlaLlanos =
+  const isDefaultCarla =
+    !painting.image ||
     painting.title?.toLowerCase().includes('blue table') ||
-    painting.title?.toLowerCase().includes('abstract') ||
-    painting.title?.toLowerCase().includes('flowers') ||
-    painting.artist?.toLowerCase().includes('carla')
+    painting.title?.toLowerCase().includes('flowers')
 
-  const title = isCarlaLlanos ? 'Flowers On Blue Table' : painting.title
-  const artist = isCarlaLlanos ? 'Carla Llanos' : (painting.artist || 'Carla Llanos')
+  const title = isDefaultCarla ? 'Flowers On Blue Table' : painting.title
+  const artist = isDefaultCarla ? 'Carla Llanos' : (painting.artist || 'The Poster Club')
 
-  // Main image and thumbnails
-  const mainImage = isCarlaLlanos ? flowersBlueTableImg : painting.image
-  const thumbList = isCarlaLlanos
-    ? [flowersThumb1, flowersThumb2, flowersThumb3, flowersThumb4]
-    : [painting.image, painting.image, painting.image, painting.image]
+  // Main framed painting image
+  const mainImage = isDefaultCarla ? flowersBlueTableImg : (painting.image || flowersBlueTableImg)
+
+  // Orientation detection for preview image stack & tight spacing
+  const isHorizontal =
+    (naturalAspect !== null && naturalAspect > 1.05) ||
+    Boolean(painting?.w && painting?.h && painting.w > painting.h) ||
+    (painting?.title && [
+      'abstract harmony',
+      'blue grass melody',
+      'polka coat',
+      'dancing movement',
+      'companions',
+      'horse sketch',
+      'mountain ridge',
+      'graphic still life',
+    ].includes(painting.title.toLowerCase()))
 
   const teaserText = `Premium-Quality Botanic Art Print By ${artist} Created Exclusively For The Poster Club, Printed On 245g FSC™-Certified Archival-Quality Art Paper.`
 
   const extendedText = `${title} Brings Together A Contemporary Palette Of Blue, Burgundy, Pink, Red, Green, And Orange, With Delicate Floral Forms That Feel Thoughtful And Quietly Vibrant. The Motif Offers A Gentle Statement For A Bedroom, Home Office, Living Room, Or Kitchen – Its Calm Elegance Pairs Harmoniously With Natural Wood, Soft Neutrals, Or Textured Ceramics, And Its Matte Finish Exudes Understated Sophisticatio`
 
   const handleAdd = () => {
-    if (isAdded) return
     setIsAdded(true)
     if (onAddToBag) {
       onAddToBag({
-        id: `${painting.id}-${selectedSize.id}-${Date.now()}`,
+        id: `${painting.id}-${selectedSize.id}-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
         paintingId: painting.id,
         title,
         artist,
@@ -124,7 +134,7 @@ export function PaintingSidePanel({ isOpen, painting, onClose, onAddToBag }) {
     }
     setTimeout(() => {
       setIsAdded(false)
-    }, 1800)
+    }, 1200)
   }
 
   return (
@@ -136,7 +146,7 @@ export function PaintingSidePanel({ isOpen, painting, onClose, onAddToBag }) {
         aria-hidden="true"
       />
 
-      {/* Main Sliding Side Panel (Drawer) */}
+      {/* Main Sliding Side Panel (Drawer) with White Background */}
       <aside
         ref={panelRef}
         id="painting-side-panel"
@@ -146,26 +156,30 @@ export function PaintingSidePanel({ isOpen, painting, onClose, onAddToBag }) {
         aria-label={`${title} by ${artist}`}
       >
         <div className="panel-scroll-container">
-          {/* Top Showcase Stage: Centered Frame, Left Badge, Right Thumbnails */}
+          {/* Top Showcase Stage: #F6F6F6 Gray Background */}
           <div className="panel-showcase-stage">
-            {/* Top-Left Bestseller Badge */}
+            {/* Top-Left Bestseller Badge (top: 24px, left: 30px) */}
             <div className="panel-badge-wrap">
               <span className="panel-badge">Bestseller</span>
             </div>
 
-            {/* Main Oak-Framed Painting (Horizontally Centered) */}
+            {/* Main Framed Painting: Clean, direct image centered without artificial CSS borders */}
             <div className="panel-main-frame">
-              <div className={`panel-frame-inner view-mode-${activeViewIndex}`}>
-                <img
-                  src={mainImage}
-                  alt={title}
-                  className="panel-main-image"
-                />
-              </div>
+              <img
+                src={mainImage}
+                alt={title}
+                className="panel-main-image"
+                onLoad={(e) => {
+                  const img = e.currentTarget
+                  if (img.naturalWidth && img.naturalHeight) {
+                    setNaturalAspect(img.naturalWidth / img.naturalHeight)
+                  }
+                }}
+              />
             </div>
 
-            {/* Right Thumbnails Column Docked at Right Edge */}
-            <div className="panel-thumbs-column">
+            {/* Right Thumbnails Column & Cancel Button (docked top: 24px, right: 30px) */}
+            <div className={`panel-thumbs-column ${isHorizontal ? 'is-horizontal-art' : ''}`}>
               {/* Slot 1: Thumbnail 1 + Overlaid Close '×' button */}
               <div className="panel-thumb-wrapper">
                 <button
@@ -175,12 +189,12 @@ export function PaintingSidePanel({ isOpen, painting, onClose, onAddToBag }) {
                   aria-label="Close details panel"
                 >
                   <svg
-                    width="14"
-                    height="14"
+                    width="13"
+                    height="13"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="#FFFFFF"
-                    strokeWidth="2.4"
+                    strokeWidth="2.5"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   >
@@ -193,63 +207,59 @@ export function PaintingSidePanel({ isOpen, painting, onClose, onAddToBag }) {
                   type="button"
                   className={`panel-thumb-btn ${activeViewIndex === 0 ? 'is-active' : ''}`}
                   onClick={() => setActiveViewIndex(0)}
-                  aria-label="View 1: Full Frame"
+                  aria-label="View 1"
                 >
                   <img
-                    src={thumbList[0]}
-                    alt="Thumbnail 1: Full frame"
-                    className="thumb-crop-0"
+                    src={mainImage}
+                    alt="Thumbnail 1"
                   />
                 </button>
               </div>
 
-              {/* Slot 2: Perspective view */}
+              {/* Slot 2: 40% opacity when inactive */}
               <button
                 type="button"
                 className={`panel-thumb-btn ${activeViewIndex === 1 ? 'is-active' : ''}`}
                 onClick={() => setActiveViewIndex(1)}
-                aria-label="View 2: Perspective View"
+                aria-label="View 2"
               >
                 <img
-                  src={thumbList[1]}
-                  alt="Thumbnail 2: Perspective view"
-                  className="thumb-crop-1"
+                  src={mainImage}
+                  alt="Thumbnail 2"
                 />
               </button>
 
-              {/* Slot 3: Detail texture zoom */}
+              {/* Slot 3: 40% opacity when inactive */}
               <button
                 type="button"
                 className={`panel-thumb-btn ${activeViewIndex === 2 ? 'is-active' : ''}`}
                 onClick={() => setActiveViewIndex(2)}
-                aria-label="View 3: Texture Detail"
+                aria-label="View 3"
               >
                 <img
-                  src={thumbList[2]}
-                  alt="Thumbnail 3: Texture detail"
-                  className="thumb-crop-2"
+                  src={mainImage}
+                  alt="Thumbnail 3"
                 />
               </button>
 
-              {/* Slot 4: Minimalist crop */}
+              {/* Slot 4: 40% opacity when inactive */}
               <button
                 type="button"
                 className={`panel-thumb-btn ${activeViewIndex === 3 ? 'is-active' : ''}`}
                 onClick={() => setActiveViewIndex(3)}
-                aria-label="View 4: Interior Context"
+                aria-label="View 4"
               >
                 <img
-                  src={thumbList[3]}
-                  alt="Thumbnail 4: Interior context"
-                  className="thumb-crop-3"
+                  src={mainImage}
+                  alt="Thumbnail 4"
                 />
               </button>
             </div>
           </div>
 
-          {/* Details & Purchase Section */}
+          {/* Details & Purchase Section with Pure White Background */}
           <div className="panel-info-section">
-            {/* Title & Artist Row with Bare Minimalist Wishlist Heart */}
+            {/* Title & Artist Row with #F6F6F6 Rounded Square Wishlist Button */}
             <div className="panel-title-row">
               <div className="panel-title-col">
                 <h2 className="panel-title">{title}</h2>
@@ -373,7 +383,7 @@ export function PaintingSidePanel({ isOpen, painting, onClose, onAddToBag }) {
               className={`panel-add-btn ${isAdded ? 'is-added' : ''}`}
               onClick={handleAdd}
             >
-              {isAdded ? 'ADDED TO BAG ✓' : 'ADD TO BAG'}
+              {isAdded ? 'ADDED TO BAG' : 'ADD TO BAG'}
             </button>
           </div>
         </div>
