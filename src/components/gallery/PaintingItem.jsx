@@ -15,42 +15,41 @@ export function PaintingItem({ painting }) {
   const figureRef = useRef(null)
   const imageRef = useRef(null)
 
-  // Listen for search-selection highlight events
+  // Listen for search-selection events: smooth canvas arrives and shakes the framed art
   useEffect(() => {
+    let shakeTimer = null
+
     const handleHighlight = (e) => {
-      if (e.detail?.id === painting.id && figureRef.current) {
-        const figure = figureRef.current
-        gsap.killTweensOf(figure)
+      if (e.detail?.id === painting.id && imageRef.current) {
+        const imgEl = imageRef.current
 
-        figure.classList.add('is-search-highlighted')
-
-        // Gentle spring pulse
-        gsap.fromTo(
-          figure,
-          { scale: 1 },
-          {
-            scale: 1.045,
-            duration: 0.32,
-            yoyo: true,
-            repeat: 1,
-            ease: 'power2.out',
-            onComplete: () => {
-              gsap.set(figure, { clearProps: 'scale' })
-            },
-          }
-        )
-
-        // Softly remove highlight after 2.6s
-        const timer = setTimeout(() => {
-          if (figure) figure.classList.remove('is-search-highlighted')
-        }, 2600)
-
-        return () => clearTimeout(timer)
+        // Wait ~450ms for the canvas glide pan to center the artwork, then playfully shake
+        shakeTimer = setTimeout(() => {
+          gsap.killTweensOf(imgEl)
+          gsap.fromTo(
+            imgEl,
+            { x: 0, rotation: 0 },
+            {
+              keyframes: [
+                { x: -6, rotation: -2.2, duration: 0.08, ease: 'power1.inOut' },
+                { x: 6, rotation: 2.2, duration: 0.08, ease: 'power1.inOut' },
+                { x: -4, rotation: -1.5, duration: 0.08, ease: 'power1.inOut' },
+                { x: 4, rotation: 1.5, duration: 0.08, ease: 'power1.inOut' },
+                { x: -2, rotation: -0.7, duration: 0.08, ease: 'power1.inOut' },
+                { x: 0, rotation: 0, duration: 0.2, ease: 'power2.out' },
+              ],
+              ease: 'power2.out',
+            }
+          )
+        }, 450)
       }
     }
 
     window.addEventListener('highlightPainting', handleHighlight)
-    return () => window.removeEventListener('highlightPainting', handleHighlight)
+    return () => {
+      window.removeEventListener('highlightPainting', handleHighlight)
+      if (shakeTimer) clearTimeout(shakeTimer)
+    }
   }, [painting.id])
 
   const handlePointerEnter = (e) => {

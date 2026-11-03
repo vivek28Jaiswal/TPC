@@ -23,13 +23,6 @@
   cursor: grabbing;
 }
 
-/* Glowing highlight when navigated from search */
-.painting-item.is-search-highlighted {
-  z-index: 45 !important;
-  box-shadow: 0 0 0 3px #FF5400, 0 16px 40px rgba(255, 84, 0, 0.45) !important;
-  transition: box-shadow 0.35s ease;
-}
-
 .painting-item img {
   width: 100%;
   height: 100%;
