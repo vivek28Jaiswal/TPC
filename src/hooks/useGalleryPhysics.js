@@ -6,8 +6,8 @@ import { getDragLimits, INITIAL_CENTER } from '../constants/galleryLayout'
 /**
  * Custom Hook: useGalleryPhysics
  *
- * Implements high-performance physics, momentum slipping, drag interaction,
- * wheel/trackpad 2D panning, and boundary spring damping with the GSAP ticker.
+ * Implements high-performance physics, tactile drag response, and a controlled,
+ * luxurious slide after-effect with cushioned friction decay and finish-line bounding.
  *
  * @param {Object} params
  * @param {import('react').RefObject} params.viewportRef - Reference to the viewport container element
@@ -39,12 +39,15 @@ export function useGalleryPhysics({ viewportRef, canvasRef }) {
     let lastPointerX = 0
     let lastPointerY = 0
 
-    // High-resolution motion history buffer for calculating release "slip" inertia
+    // High-resolution motion history buffer for calculating release "slide" after-effect
     const motionHistory = []
 
     const viewport = viewportRef.current
     const canvas = canvasRef.current
     if (!viewport || !canvas) return
+
+    // Position canvas at initial location
+    canvas.style.transform = `translate3d(${initialX.toFixed(2)}px, ${initialY.toFixed(2)}px, 0)`
 
     // Pointer Drag Handlers
     const onPointerDown = (e) => {
@@ -77,7 +80,7 @@ export function useGalleryPhysics({ viewportRef, canvasRef }) {
       let dx = e.clientX - lastPointerX
       let dy = e.clientY - lastPointerY
 
-      // Tactile elastic resistance if pulling past the finish lines
+      // Tactile elastic resistance if dragging past finish lines
       if ((targetX > limits.maxTargetX && dx > 0) || (targetX < limits.minTargetX && dx < 0)) {
         dx *= 0.3
       }
@@ -88,9 +91,9 @@ export function useGalleryPhysics({ viewportRef, canvasRef }) {
       targetX += dx
       targetY += dy
 
-      // Push into motion history buffer (keep last 120ms of events)
+      // Push into motion history buffer (keep last 80ms for responsive fling detection)
       motionHistory.push({ x: e.clientX, y: e.clientY, time: now })
-      while (motionHistory.length > 0 && now - motionHistory[0].time > 120) {
+      while (motionHistory.length > 0 && now - motionHistory[0].time > 80) {
         motionHistory.shift()
       }
 
@@ -103,13 +106,13 @@ export function useGalleryPhysics({ viewportRef, canvasRef }) {
       isPointerDown = false
       viewport.style.cursor = 'grab'
 
-      // Calculate the luxurious "slidly slip" momentum after-effect
       const now = performance.now()
-      // Filter out points older than 100ms
-      while (motionHistory.length > 0 && now - motionHistory[0].time > 100) {
+      // Filter out points older than 80ms
+      while (motionHistory.length > 0 && now - motionHistory[0].time > 80) {
         motionHistory.shift()
       }
 
+      // Calculate controlled slide after-effect momentum
       if (motionHistory.length >= 2) {
         const oldest = motionHistory[0]
         const newest = motionHistory[motionHistory.length - 1]
@@ -117,21 +120,25 @@ export function useGalleryPhysics({ viewportRef, canvasRef }) {
         const vx = (newest.x - oldest.x) / dt
         const vy = (newest.y - oldest.y) / dt
 
-        // Kinetic fling boost creating that buttery slip slide
-        velX = vx * 22
-        velY = vy * 22
+        // Controlled, luxurious slide after-effect (moderated speed, never shoots wildly)
+        const maxFlingSpeed = 13
+        velX = Math.max(-maxFlingSpeed, Math.min(maxFlingSpeed, vx * 11.5))
+        velY = Math.max(-maxFlingSpeed, Math.min(maxFlingSpeed, vy * 11.5))
+      } else {
+        velX = 0
+        velY = 0
       }
     }
 
-    // Wheel / Trackpad smooth panning with silky slip
+    // Wheel / Trackpad smooth panning with gentle slide
     const onWheel = (e) => {
       e.preventDefault()
 
-      targetX -= e.deltaX * 1.15
-      targetY -= e.deltaY * 1.15
+      targetX -= e.deltaX * 0.95
+      targetY -= e.deltaY * 0.95
 
-      velX = -e.deltaX * 0.28
-      velY = -e.deltaY * 0.28
+      velX = Math.max(-8, Math.min(8, -e.deltaX * 0.14))
+      velY = Math.max(-8, Math.min(8, -e.deltaY * 0.14))
     }
 
     // Prevent default ghost image dragging
@@ -153,40 +160,41 @@ export function useGalleryPhysics({ viewportRef, canvasRef }) {
     viewport.addEventListener('dragstart', onDragStart)
     window.addEventListener('resize', onResize)
 
-    // GSAP Ticker: 120 FPS Buttery Physics, Momentum Slip & Finish-Line Bounded Spring Stop
+    // GSAP Ticker: 120 FPS Buttery Physics, Controlled Slide After-Effect & Finish-Line Bounding
     const tickerUpdate = () => {
       if (!isPointerDown) {
-        // Silky momentum slip friction decay
+        // Silky, controlled slide after-effect friction decay
         targetX += velX
         targetY += velY
 
-        velX *= 0.945
-        velY *= 0.945
+        velX *= 0.952
+        velY *= 0.952
 
-        if (Math.abs(velX) < 0.005) velX = 0
-        if (Math.abs(velY) < 0.005) velY = 0
+        if (Math.abs(velX) < 0.01) velX = 0
+        if (Math.abs(velY) < 0.01) velY = 0
 
-        // Smooth finish-line spring stop (cushions momentum and halts cleanly at boundary)
+        // Smooth finish-line spring stop (cushions slide momentum cleanly at boundary)
         if (targetX < limits.minTargetX) {
-          targetX += (limits.minTargetX - targetX) * 0.16
-          velX *= 0.6
+          targetX += (limits.minTargetX - targetX) * 0.14
+          velX *= 0.55
         } else if (targetX > limits.maxTargetX) {
-          targetX += (limits.maxTargetX - targetX) * 0.16
-          velX *= 0.6
+          targetX += (limits.maxTargetX - targetX) * 0.14
+          velX *= 0.55
         }
 
         if (targetY < limits.minTargetY) {
-          targetY += (limits.minTargetY - targetY) * 0.16
-          velY *= 0.6
+          targetY += (limits.minTargetY - targetY) * 0.14
+          velY *= 0.55
         } else if (targetY > limits.maxTargetY) {
-          targetY += (limits.maxTargetY - targetY) * 0.16
-          velY *= 0.6
+          targetY += (limits.maxTargetY - targetY) * 0.14
+          velY *= 0.55
         }
       }
 
-      // Buttery smooth lerp damping
-      currentX += (targetX - currentX) * 0.092
-      currentY += (targetY - currentY) * 0.092
+      // Buttery smooth lerp damping: responsive while dragging, cushioned glide during slide
+      const lerpFactor = isPointerDown ? 0.16 : 0.088
+      currentX += (targetX - currentX) * lerpFactor
+      currentY += (targetY - currentY) * lerpFactor
 
       canvas.style.transform = `translate3d(${currentX.toFixed(2)}px, ${currentY.toFixed(2)}px, 0)`
     }
@@ -209,4 +217,3 @@ export function useGalleryPhysics({ viewportRef, canvasRef }) {
 }
 
 export default useGalleryPhysics
-
