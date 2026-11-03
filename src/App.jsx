@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import LocomotiveScroll from 'locomotive-scroll'
 import gsap from 'gsap'
 import './App.css'
@@ -281,8 +281,35 @@ function getDragLimits() {
 }
 
 function App() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const menuWrapperRef = useRef(null)
   const viewportRef = useRef(null)
   const canvasRef = useRef(null)
+
+  // Close menu on outside click or Escape key
+  useEffect(() => {
+    if (!isMenuOpen) return
+
+    const handlePointerDown = (e) => {
+      if (menuWrapperRef.current && !menuWrapperRef.current.contains(e.target)) {
+        setIsMenuOpen(false)
+      }
+    }
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setIsMenuOpen(false)
+      }
+    }
+
+    window.addEventListener('pointerdown', handlePointerDown)
+    window.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      window.removeEventListener('pointerdown', handlePointerDown)
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [isMenuOpen])
 
   useEffect(() => {
     // 1. Initialize Locomotive Scroll
@@ -320,8 +347,8 @@ function App() {
 
     // Pointer Drag Handlers
     const onPointerDown = (e) => {
-      // Do not hijack clicks on navigation buttons
-      if (e.target.closest('.header-nav') || e.target.closest('button')) return
+      // Do not hijack clicks on navigation buttons or menu dropdown
+      if (e.target.closest('.header-nav') || e.target.closest('button') || e.target.closest('.menu-dropdown')) return
 
       isPointerDown = true
       lastPointerX = e.clientX
@@ -481,16 +508,91 @@ function App() {
           THE POSTER CLUB
         </h1>
 
-        <nav className="nav-actions" aria-label="Main menu">
-          <button id="btn-menu" type="button" className="btn-menu">
-            Menu
+        <nav ref={menuWrapperRef} className="nav-actions" aria-label="Main menu">
+          <button
+            id="btn-menu"
+            type="button"
+            className={`btn-menu ${isMenuOpen ? 'is-active' : ''}`}
+            onClick={() => setIsMenuOpen((prev) => !prev)}
+            aria-expanded={isMenuOpen}
+            aria-controls="menu-dropdown-container"
+          >
+            <span className="btn-menu-label-wrap">
+              <span className="btn-menu-slider">
+                <span className="btn-menu-text">Menu</span>
+                <span className="btn-menu-text">Close</span>
+              </span>
+            </span>
           </button>
-          <button id="btn-shop-artworks" type="button" className="btn-accent">
+
+          <button
+            id="btn-shop-artworks"
+            type="button"
+            className="btn-accent"
+            onClick={() => setIsMenuOpen(false)}
+          >
             Shop Artworks
           </button>
-          <button id="btn-bag" type="button" className="btn-accent">
+          <button
+            id="btn-bag"
+            type="button"
+            className="btn-accent"
+            onClick={() => setIsMenuOpen(false)}
+          >
             BAG (0)
           </button>
+
+          {/* Awwwards Smooth Expanding Menu Container (Aligned up to end of BAG button) */}
+          <div
+            id="menu-dropdown-container"
+            className={`menu-dropdown ${isMenuOpen ? 'is-open' : 'is-closed'}`}
+            aria-hidden={!isMenuOpen}
+          >
+            <div className="menu-dropdown-inner">
+              {/* Left Primary Categories (Hover reveals parentheses) */}
+              <div className="menu-col-main">
+                <a href="#shop" className="menu-link-main" onClick={() => setIsMenuOpen(false)}>
+                  <span className="bracket bracket-left">(</span>
+                  <span className="menu-link-text">Shop</span>
+                  <span className="bracket bracket-right">)</span>
+                </a>
+                <a href="#artists" className="menu-link-main" onClick={() => setIsMenuOpen(false)}>
+                  <span className="bracket bracket-left">(</span>
+                  <span className="menu-link-text">Artists</span>
+                  <span className="bracket bracket-right">)</span>
+                </a>
+                <a href="#inspiration" className="menu-link-main" onClick={() => setIsMenuOpen(false)}>
+                  <span className="bracket bracket-left">(</span>
+                  <span className="menu-link-text">Inspiration</span>
+                  <span className="bracket bracket-right">)</span>
+                </a>
+                <a href="#about" className="menu-link-main" onClick={() => setIsMenuOpen(false)}>
+                  <span className="bracket bracket-left">(</span>
+                  <span className="menu-link-text">About</span>
+                  <span className="bracket bracket-right">)</span>
+                </a>
+              </div>
+
+              {/* Right Sub-categories with bullet markers */}
+              <div className="menu-col-sub">
+                <a href="#art-prints" className="menu-link-sub" onClick={() => setIsMenuOpen(false)}>
+                  <span className="bullet-dot">•</span> Art Prints
+                </a>
+                <a href="#canvas-art" className="menu-link-sub" onClick={() => setIsMenuOpen(false)}>
+                  <span className="bullet-dot">•</span> Canvas Art
+                </a>
+                <a href="#wall-objects" className="menu-link-sub" onClick={() => setIsMenuOpen(false)}>
+                  <span className="bullet-dot">•</span> Wall Objects
+                </a>
+                <a href="#frames" className="menu-link-sub" onClick={() => setIsMenuOpen(false)}>
+                  <span className="bullet-dot">•</span> Frames
+                </a>
+                <a href="#passepartouts" className="menu-link-sub" onClick={() => setIsMenuOpen(false)}>
+                  <span className="bullet-dot">•</span> Passepartouts
+                </a>
+              </div>
+            </div>
+          </div>
         </nav>
       </header>
 
