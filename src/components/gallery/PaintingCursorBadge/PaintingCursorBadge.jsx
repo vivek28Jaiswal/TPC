@@ -1,169 +1,171 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import './PaintingCursorBadge.css'
+
+// Fixed cursor-to-button offset matching reference image
+const OFFSET_X = 32
+const OFFSET_Y = 32
+const LERP_FACTOR = 0.16
 
 /**
  * PaintingCursorBadge Component
  *
- * Smoothly reveals and dissolves a sleek black pill badge beside the cursor
- * when hovering over paintings in the gallery wall, with luxurious easing
- * and zero abrupt snapping.
+ * Renders a sleek matte black pill badge inside each painting's container.
+ * The outer container strictly handles smooth translate3d lerp positioning,
+ * while the inner pill cleanly handles opacity/scale visibility transitions,
+ * completely preventing any transform collisions, jumps, or hover-out blinks.
+ *
+ * @param {Object} props
+ * @param {string} props.title - Painting artwork title
+ * @param {import('react').RefObject} props.containerRef - Ref to the painting element
  */
-export function PaintingCursorBadge() {
+export function PaintingCursorBadge({ title, containerRef }) {
   const badgeRef = useRef(null)
-  const textRef = useRef(null)
-  const [title, setTitle] = useState('')
-  const currentPaintingIdRef = useRef(null)
-  const isPointerDownRef = useRef(false)
-  const isVisibleRef = useRef(false)
+  const pillRef = useRef(null)
+  const isHoveredRef = useRef(false)
+  const currentPos = useRef({ x: 0, y: 0 })
+  const targetPos = useRef({ x: 0, y: 0 })
+  const rafId = useRef(null)
 
   useEffect(() => {
+    const container = containerRef?.current
     const badge = badgeRef.current
-    const textEl = textRef.current
-    if (!badge) return
+    const pill = pillRef.current
+    if (!container || !badge || !pill) return
 
-    // QuickTo position setters for smooth, cushioned follower movement
-    const xTo = gsap.quickTo(badge, 'x', { duration: 0.28, ease: 'power3.out' })
-    const yTo = gsap.quickTo(badge, 'y', { duration: 0.28, ease: 'power3.out' })
+    const animate = () => {
+      // Smooth cursor interpolation (lerp)
+      currentPos.current.x += (targetPos.current.x - currentPos.current.x) * LERP_FACTOR
+      currentPos.current.y += (targetPos.current.y - currentPos.current.y) * LERP_FACTOR
 
-    const showBadge = (targetX, targetY) => {
-      isVisibleRef.current = true
+      badge.style.transform = `translate3d(${currentPos.current.x}px, ${currentPos.current.y}px, 0)`
 
-      // Pre-position badge right at cursor location to eliminate any off-screen flying jerk
-      gsap.set(badge, {
-        x: targetX,
-        y: targetY + 8,
-        scale: 0.88,
-        opacity: 0,
-        visibility: 'visible',
-      })
-
-      // Gentle, luxurious reveal: floating softly into place
-      gsap.to(badge, {
-        y: targetY,
-        scale: 1,
-        opacity: 1,
-        duration: 0.38,
-        ease: 'power3.out',
-        overwrite: 'auto',
-      })
+      if (isHoveredRef.current) {
+        rafId.current = requestAnimationFrame(animate)
+      } else {
+        // Continue lerping during fade-out until motion settles
+        const dx = Math.abs(targetPos.current.x - currentPos.current.x)
+        const dy = Math.abs(targetPos.current.y - currentPos.current.y)
+        if (dx > 0.5 || dy > 0.5) {
+          rafId.current = requestAnimationFrame(animate)
+        } else {
+          rafId.current = null
+        }
+      }
     }
 
-    const hideBadge = () => {
-      if (!isVisibleRef.current) return
-      isVisibleRef.current = false
+    const startAnimation = () => {
+      if (!rafId.current) {
+        rafId.current = requestAnimationFrame(animate)
+      }
+    }
 
-      // Soft, gentle exit fade and slight downward drift
-      gsap.to(badge, {
+    const stopAnimation = () => {
+      if (rafId.current) {
+        cancelAnimationFrame(rafId.current)
+        rafId.current = null
+      }
+    }
+
+    const onPointerEnter = (e) => {
+      if (e.pointerType === 'touch' || e.buttons > 0) return
+
+      isHoveredRef.current = true
+
+      const rect = container.getBoundingClientRect()
+      const initX = e.clientX - rect.left + OFFSET_X
+      const initY = e.clientY - rect.top + OFFSET_Y
+
+      currentPos.current.x = initX
+      currentPos.current.y = initY
+      targetPos.current.x = initX
+      targetPos.current.y = initY
+
+      badge.style.transform = `translate3d(${initX}px, ${initY}px, 0)`
+      badge.style.visibility = 'visible'
+
+      // Smooth reveal on the inner pill (never collides with translate3d)
+      gsap.killTweensOf(pill)
+      gsap.fromTo(
+        pill,
+        { scale: 0.88, opacity: 0 },
+        {
+          scale: 1,
+          opacity: 1,
+          duration: 0.22,
+          ease: 'power2.out',
+          overwrite: 'auto',
+        }
+      )
+
+      startAnimation()
+    }
+
+    const onPointerMove = (e) => {
+      if (e.pointerType === 'touch') return
+      if (e.buttons > 0) {
+        if (isHoveredRef.current) {
+          onPointerLeave()
+        }
+        return
+      }
+
+      // If not yet hovered, do not process move events
+      if (!isHoveredRef.current) return
+
+      const rect = container.getBoundingClientRect()
+      targetPos.current.x = e.clientX - rect.left + OFFSET_X
+      targetPos.current.y = e.clientY - rect.top + OFFSET_Y
+    }
+
+    const onPointerLeave = () => {
+      if (!isHoveredRef.current) return
+      isHoveredRef.current = false
+
+      // Smooth exit fade on the inner pill
+      gsap.killTweensOf(pill)
+      gsap.to(pill, {
         opacity: 0,
         scale: 0.88,
-        y: '+=6',
-        duration: 0.32,
+        duration: 0.18,
         ease: 'power2.inOut',
         overwrite: 'auto',
         onComplete: () => {
-          if (!isVisibleRef.current) {
-            gsap.set(badge, { visibility: 'hidden' })
+          if (!isHoveredRef.current) {
+            badge.style.visibility = 'hidden'
+            stopAnimation()
           }
         },
       })
     }
 
-    const onPointerMove = (e) => {
-      // While dragging canvas, keep badge hidden
-      if (isPointerDownRef.current) {
-        hideBadge()
-        return
-      }
-
-      // Check if cursor is over any painting
-      const target = e.target
-      const paintingEl = target ? target.closest('.painting-item') : null
-
-      if (paintingEl) {
-        const itemTitle = paintingEl.getAttribute('data-painting-title') || 'Artwork'
-        const itemId = paintingEl.getAttribute('data-painting-id')
-
-        // Compute cursor offset coordinates
-        let targetX = e.clientX + 16
-        let targetY = e.clientY + 16
-
-        // Prevent overflow at right or bottom edges
-        if (targetX + 180 > window.innerWidth) {
-          targetX = e.clientX - 170
-        }
-        if (targetY + 45 > window.innerHeight) {
-          targetY = e.clientY - 45
-        }
-
-        // If newly entering from empty space: smooth reveal
-        if (!isVisibleRef.current) {
-          currentPaintingIdRef.current = itemId
-          setTitle(itemTitle)
-          showBadge(targetX, targetY)
-        } else if (currentPaintingIdRef.current !== itemId) {
-          // If moving directly between paintings: smooth text crossfade without badge re-pop
-          currentPaintingIdRef.current = itemId
-          setTitle(itemTitle)
-          if (textEl) {
-            gsap.fromTo(
-              textEl,
-              { opacity: 0, y: 3 },
-              { opacity: 1, y: 0, duration: 0.22, ease: 'power2.out' }
-            )
-          }
-        }
-
-        // Smoothly guide badge to mouse coordinates
-        xTo(targetX)
-        yTo(targetY)
-      } else {
-        if (isVisibleRef.current) {
-          currentPaintingIdRef.current = null
-          hideBadge()
-        }
+    const onPointerDown = (e) => {
+      if (e.pointerType === 'touch') return
+      if (isHoveredRef.current) {
+        onPointerLeave()
       }
     }
 
-    const onPointerDown = () => {
-      isPointerDownRef.current = true
-      currentPaintingIdRef.current = null
-      if (isVisibleRef.current) {
-        isVisibleRef.current = false
-        gsap.to(badge, {
-          opacity: 0,
-          scale: 0.85,
-          duration: 0.18,
-          ease: 'power2.in',
-          overwrite: 'auto',
-          onComplete: () => {
-            gsap.set(badge, { visibility: 'hidden' })
-          },
-        })
-      }
-    }
-
-    const onPointerUp = () => {
-      isPointerDownRef.current = false
-    }
-
-    window.addEventListener('pointermove', onPointerMove, { passive: true })
-    window.addEventListener('pointerdown', onPointerDown, { passive: true })
-    window.addEventListener('pointerup', onPointerUp, { passive: true })
+    container.addEventListener('pointerenter', onPointerEnter)
+    container.addEventListener('pointermove', onPointerMove, { passive: true })
+    container.addEventListener('pointerleave', onPointerLeave)
+    container.addEventListener('pointerdown', onPointerDown)
 
     return () => {
-      window.removeEventListener('pointermove', onPointerMove)
-      window.removeEventListener('pointerdown', onPointerDown)
-      window.removeEventListener('pointerup', onPointerUp)
-      gsap.killTweensOf(badge)
+      container.removeEventListener('pointerenter', onPointerEnter)
+      container.removeEventListener('pointermove', onPointerMove)
+      container.removeEventListener('pointerleave', onPointerLeave)
+      container.removeEventListener('pointerdown', onPointerDown)
+      stopAnimation()
+      gsap.killTweensOf(pill)
     }
-  }, [])
+  }, [containerRef])
 
   return (
     <div ref={badgeRef} className="painting-cursor-badge" aria-hidden="true">
-      <div className="badge-pill">
+      <div ref={pillRef} className="badge-pill">
         <span className="badge-plus">+</span>
-        <span ref={textRef} className="badge-title">{title}</span>
+        <span className="badge-title">{title}</span>
       </div>
     </div>
   )

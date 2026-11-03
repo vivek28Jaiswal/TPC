@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { HeaderNav } from './components/navigation'
-import { GalleryCanvas, AmbientShadow, PaintingCursorBadge } from './components/gallery'
+import { GalleryCanvas, AmbientShadow } from './components/gallery'
 import { DragIndicator } from './components/common'
 import { useClickOutside, useGalleryPhysics } from './hooks'
 import './App.css'
@@ -45,10 +45,7 @@ function App() {
       {/* 3. Soft Ambient Sunlight Window Shadow Overlay */}
       <AmbientShadow />
 
-      {/* 4. Interactive Painting Cursor Badge with GSAP Follow & Smooth Shake */}
-      <PaintingCursorBadge />
-
-      {/* 5. Drag to Explore Floating Indicator */}
+      {/* 4. Drag to Explore Floating Indicator */}
       <DragIndicator />
     </div>
   )

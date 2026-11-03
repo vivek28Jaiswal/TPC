@@ -1,16 +1,20 @@
-/* Floating Painting Cursor Badge (Following Cursor on Hover) */
+/* Floating Painting Cursor Badge (Following Cursor on Hover inside Painting Container) */
 .painting-cursor-badge {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
-  z-index: 40;
+  z-index: 25;
   pointer-events: none;
   user-select: none;
-  will-change: transform, opacity;
-  opacity: 0;
   visibility: hidden;
   transform: translate3d(0, 0, 0);
-  transform-origin: center center;
+  will-change: transform;
+}
+
+.painting-cursor-badge,
+.painting-cursor-badge * {
+  pointer-events: none !important;
+  user-select: none !important;
 }
 
 /* Sleek matte black pill button */
@@ -24,6 +28,11 @@
   padding: 6px 14px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28), 0 2px 6px rgba(0, 0, 0, 0.15);
   line-height: 1;
+  white-space: nowrap;
+  opacity: 0;
+  transform: scale(0.88);
+  transform-origin: center center;
+  will-change: transform, opacity;
 }
 
 .badge-plus {
@@ -45,4 +54,10 @@
   white-space: nowrap;
   color: #FFFFFF;
   display: inline-block;
+}
+
+@media (max-width: 768px) {
+  .badge-title {
+    letter-spacing: -0.4px;
+  }
 }

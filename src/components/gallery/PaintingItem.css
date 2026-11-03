@@ -6,13 +6,17 @@
   background-color: #FFFFFF;
   margin: 0;
   padding: 0;
-  overflow: hidden;
+  overflow: visible;
   user-select: none;
   pointer-events: auto;
   border-radius: 1px;
   cursor: grab;
   transform-origin: 50% 10%; /* Authentic hanging frame nail pivot */
   will-change: transform;
+}
+
+.painting-item:hover {
+  z-index: 20;
 }
 
 .painting-item:active {
@@ -27,4 +31,7 @@
   user-select: none;
   -webkit-user-drag: none;
   pointer-events: none;
+  border-radius: 1px;
+  transform-origin: 50% 10%;
+  will-change: transform;
 }
