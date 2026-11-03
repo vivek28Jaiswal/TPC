@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import flowersBlueTableImg from '../../assets/image-paintings/flowers-blue-table.png'
+import { getArtworkDescription } from '../../constants/artworkDescriptions'
 import './PaintingSidePanel.css'
 
 // Available standard art print formats matching The Poster Club catalog
@@ -114,7 +115,8 @@ export function PaintingSidePanel({ isOpen, painting, onClose, onAddToBag }) {
     painting.title?.toLowerCase().includes('flowers')
 
   const title = isDefaultCarla ? 'Flowers On Blue Table' : painting.title
-  const artist = isDefaultCarla ? 'Carla Llanos' : (painting.artist || 'The Poster Club')
+  const desc = getArtworkDescription(title, painting.artist)
+  const artist = isDefaultCarla ? 'Carla Llanos' : (desc.artist || painting.artist || 'The Poster Club')
 
   // Main framed painting image
   const mainImage = isDefaultCarla ? flowersBlueTableImg : (painting.image || flowersBlueTableImg)
@@ -133,10 +135,6 @@ export function PaintingSidePanel({ isOpen, painting, onClose, onAddToBag }) {
       'mountain ridge',
       'graphic still life',
     ].includes(painting.title.toLowerCase()))
-
-  const teaserText = `Premium-Quality Botanic Art Print By ${artist} Created Exclusively For The Poster Club, Printed On 245g FSC™-Certified Archival-Quality Art Paper.`
-
-  const extendedText = `${title} Brings Together A Contemporary Palette Of Blue, Burgundy, Pink, Red, Green, And Orange, With Delicate Floral Forms That Feel Thoughtful And Quietly Vibrant. The Motif Offers A Gentle Statement For A Bedroom, Home Office, Living Room, Or Kitchen – Its Calm Elegance Pairs Harmoniously With Natural Wood, Soft Neutrals, Or Textured Ceramics, And Its Matte Finish Exudes Understated Sophisticatio`
 
   const handleAdd = () => {
     setIsAdded(true)
@@ -309,12 +307,26 @@ export function PaintingSidePanel({ isOpen, painting, onClose, onAddToBag }) {
             {/* Price */}
             <div className="panel-price">€{selectedSize.price}</div>
 
-            {/* Description Section with "Read More" <-> "Close" Toggle */}
+            {/* Description Section matching exact Poster Club reference layout */}
             <div className="panel-desc-wrap">
-              <p className="panel-desc-p1">{teaserText}</p>
+              <p className="panel-desc-p1">{desc.teaser}</p>
 
               {isExpanded && (
-                <p className="panel-desc-p2 animate-fade-in">{extendedText}</p>
+                <div className="panel-desc-extended animate-fade-in">
+                  <p className="panel-desc-p2">{desc.story}</p>
+
+                  <p className="panel-desc-p3">{desc.craftsmanship}</p>
+
+                  <ul className="panel-desc-bullets">
+                    {desc.bullets.map((bullet, idx) => (
+                      <li key={idx} className="panel-desc-bullet-item">
+                        {bullet}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <p className="panel-desc-collection">{desc.collection}</p>
+                </div>
               )}
 
               <button

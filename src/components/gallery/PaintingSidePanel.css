@@ -359,29 +359,62 @@
   line-height: 1;
 }
 
-/* Description Section with Collapsible Extended Text */
+/* Description Section matching exact Poster Club reference layout */
 .panel-desc-wrap {
   display: flex;
   flex-direction: column;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
 .panel-desc-p1 {
   font-family: 'Geist', sans-serif;
   font-size: 13px;
-  line-height: 1.55;
-  color: #555555;
+  line-height: 1.38;
+  color: #444444;
   letter-spacing: -0.2px;
-  margin: 0 0 8px 0;
+  margin: 0 0 12px 0;
 }
 
-.panel-desc-p2 {
+.panel-desc-extended {
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-desc-p2,
+.panel-desc-p3 {
   font-family: 'Geist', sans-serif;
   font-size: 13px;
-  line-height: 1.55;
-  color: #555555;
+  line-height: 1.38;
+  color: #444444;
   letter-spacing: -0.2px;
-  margin: 0 0 8px 0;
+  margin: 0 0 12px 0;
+}
+
+.panel-desc-bullets {
+  list-style: disc;
+  padding-left: 18px;
+  margin: 2px 0 14px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.panel-desc-bullet-item {
+  font-family: 'Geist', sans-serif;
+  font-size: 13px;
+  line-height: 1.35;
+  color: #444444;
+  letter-spacing: -0.2px;
+}
+
+.panel-desc-collection {
+  font-family: 'Geist', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #111111;
+  line-height: 1.35;
+  letter-spacing: -0.2px;
+  margin: 2px 0 12px 0;
 }
 
 .animate-fade-in {
