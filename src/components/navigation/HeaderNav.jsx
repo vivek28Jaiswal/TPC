@@ -1,15 +1,21 @@
 import MenuDropdown from './MenuDropdown'
 import BagDropdown from './BagDropdown'
+import SearchDropdown from './SearchDropdown'
 import './HeaderNav.css'
 
 /**
  * Top-level fixed Header and Navigation bar
  * Responsive mobile layout matches the stacked sliding CTA design
- * Menu opens left-to-right; Bag opens right-to-left with cart icon
+ * 3 CTAs with tri-directional kinetic physics:
+ * - Menu opens Left-to-Right
+ * - Search Artwork opens Center-Outwards to both sides
+ * - Bag opens Right-to-Left
  *
  * @param {Object} props
  * @param {boolean} props.isMenuOpen - Whether the dropdown menu is visible
  * @param {Function} props.setIsMenuOpen - State setter for menu visibility
+ * @param {boolean} props.isSearchOpen - Whether the search artwork panel is visible
+ * @param {Function} props.setIsSearchOpen - State setter for search visibility
  * @param {boolean} props.isBagOpen - Whether the shopping bag panel is visible
  * @param {Function} props.setIsBagOpen - State setter for bag visibility
  * @param {string} props.activeCategory - Currently active menu category
@@ -19,6 +25,8 @@ import './HeaderNav.css'
 export function HeaderNav({
   isMenuOpen,
   setIsMenuOpen,
+  isSearchOpen,
+  setIsSearchOpen,
   isBagOpen,
   setIsBagOpen,
   activeCategory,
@@ -26,23 +34,27 @@ export function HeaderNav({
   menuWrapperRef,
 }) {
   const handleMenuClick = () => {
+    if (setIsSearchOpen) setIsSearchOpen(false)
     if (setIsBagOpen) setIsBagOpen(false)
     setIsMenuOpen((prev) => !prev)
   }
 
-  const handleBagClick = () => {
-    setIsMenuOpen(false)
-    if (setIsBagOpen) setIsBagOpen((prev) => !prev)
-  }
-
-  const handleShopClick = () => {
+  const handleSearchClick = () => {
     setIsMenuOpen(false)
     if (setIsBagOpen) setIsBagOpen(false)
+    if (setIsSearchOpen) setIsSearchOpen((prev) => !prev)
+  }
+
+  const handleBagClick = () => {
+    setIsMenuOpen(false)
+    if (setIsSearchOpen) setIsSearchOpen(false)
+    if (setIsBagOpen) setIsBagOpen((prev) => !prev)
   }
 
   const navClasses = [
     'nav-actions',
     isMenuOpen ? 'is-menu-open' : 'is-menu-closed',
+    isSearchOpen ? 'is-search-open' : 'is-search-closed',
     isBagOpen ? 'is-bag-open' : 'is-bag-closed',
   ].join(' ')
 
@@ -57,6 +69,7 @@ export function HeaderNav({
         className={navClasses}
         aria-label="Main menu"
       >
+        {/* 1. Menu CTA (Left Origin) */}
         <button
           id="btn-menu"
           type="button"
@@ -73,15 +86,24 @@ export function HeaderNav({
           </span>
         </button>
 
+        {/* 2. Search Artwork CTA (Center Origin - Elegant Black matching Menu) */}
         <button
-          id="btn-shop-artworks"
+          id="btn-search-artwork"
           type="button"
-          className="btn-accent"
-          onClick={handleShopClick}
+          className={`btn-search ${isSearchOpen ? 'is-active' : ''}`}
+          onClick={handleSearchClick}
+          aria-expanded={isSearchOpen}
+          aria-controls="search-dropdown-container"
         >
-          Shop Artworks
+          <span className="btn-search-label-wrap">
+            <span className="btn-search-slider">
+              <span className="btn-search-text">Search Artwork</span>
+              <span className="btn-search-text">Close</span>
+            </span>
+          </span>
         </button>
 
+        {/* 3. Bag CTA (Right Origin) */}
         <button
           id="btn-bag"
           type="button"
@@ -104,6 +126,12 @@ export function HeaderNav({
           activeCategory={activeCategory}
           onSelectCategory={setActiveCategory}
           onClose={() => setIsMenuOpen(false)}
+        />
+
+        {/* Smooth Expanding Search Dropdown (Opens Center Symmetrically) */}
+        <SearchDropdown
+          isOpen={isSearchOpen}
+          onClose={() => setIsSearchOpen && setIsSearchOpen(false)}
         />
 
         {/* Smooth Expanding Orange Bag Dropdown (Opens Right-to-Left) */}

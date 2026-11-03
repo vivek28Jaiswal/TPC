@@ -13,6 +13,7 @@ import './App.css'
  */
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [isBagOpen, setIsBagOpen] = useState(false)
   const [activeCategory, setActiveCategory] = useState('shop')
 
@@ -25,9 +26,10 @@ function App() {
     menuWrapperRef,
     () => {
       setIsMenuOpen(false)
+      setIsSearchOpen(false)
       setIsBagOpen(false)
     },
-    isMenuOpen || isBagOpen
+    isMenuOpen || isSearchOpen || isBagOpen
   )
 
   // Initialize smooth kinetic momentum physics and bounds damping
@@ -39,6 +41,8 @@ function App() {
       <HeaderNav
         isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
+        isSearchOpen={isSearchOpen}
+        setIsSearchOpen={setIsSearchOpen}
         isBagOpen={isBagOpen}
         setIsBagOpen={setIsBagOpen}
         activeCategory={activeCategory}

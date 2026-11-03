@@ -146,9 +146,29 @@ export function useGalleryPhysics({ viewportRef, canvasRef }) {
       e.preventDefault()
     }
 
-    // Dynamic viewport resize recalculation
+    // dynamic viewport resize recalculation
     const onResize = () => {
       limits = getDragLimits()
+    }
+
+    // Programmatic smooth glide to target painting (e.g. from search selection)
+    const handlePanToPainting = (e) => {
+      const painting = e.detail
+      if (!painting) return
+
+      const pCenterX = painting.x + (painting.w / 2)
+      const pCenterY = painting.y + (painting.h / 2)
+
+      const desiredX = (window.innerWidth / 2) - pCenterX
+      const desiredY = (window.innerHeight / 2) - pCenterY
+
+      limits = getDragLimits()
+      targetX = Math.max(limits.minTargetX, Math.min(limits.maxTargetX, desiredX))
+      targetY = Math.max(limits.minTargetY, Math.min(limits.maxTargetY, desiredY))
+
+      // Clear manual fling velocities so it glides smoothly to the artwork
+      velX = 0
+      velY = 0
     }
 
     // Attach interaction listeners
@@ -159,6 +179,7 @@ export function useGalleryPhysics({ viewportRef, canvasRef }) {
     viewport.addEventListener('wheel', onWheel, { passive: false })
     viewport.addEventListener('dragstart', onDragStart)
     window.addEventListener('resize', onResize)
+    window.addEventListener('panToPainting', handlePanToPainting)
 
     // GSAP Ticker: 120 FPS Buttery Physics, Controlled Slide After-Effect & Finish-Line Bounding
     const tickerUpdate = () => {
@@ -196,6 +217,9 @@ export function useGalleryPhysics({ viewportRef, canvasRef }) {
       currentX += (targetX - currentX) * lerpFactor
       currentY += (targetY - currentY) * lerpFactor
 
+      // Expose current canvas position for search proximity calculations
+      window.__galleryCanvasPos = { x: currentX, y: currentY }
+
       canvas.style.transform = `translate3d(${currentX.toFixed(2)}px, ${currentY.toFixed(2)}px, 0)`
     }
 
@@ -212,6 +236,7 @@ export function useGalleryPhysics({ viewportRef, canvasRef }) {
       viewport.removeEventListener('wheel', onWheel)
       viewport.removeEventListener('dragstart', onDragStart)
       window.removeEventListener('resize', onResize)
+      window.removeEventListener('panToPainting', handlePanToPainting)
     }
   }, [viewportRef, canvasRef])
 }

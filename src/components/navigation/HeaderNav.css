@@ -117,6 +117,61 @@
   opacity: 0.92;
 }
 
+/* Search Artwork Button with Smooth Sliding Text (Search Artwork <-> Close) */
+.btn-search {
+  background-color: #000000;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 6px;
+  min-width: 140px;
+  height: 38px;
+  padding: 0 16px;
+  font-family: 'Geist', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: -0.8px;
+  cursor: pointer;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  overflow: hidden;
+  transition: opacity 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-search:hover {
+  opacity: 0.9;
+}
+
+.btn-search-label-wrap {
+  display: block;
+  overflow: hidden;
+  height: 24px;
+  position: relative;
+}
+
+.btn-search-slider {
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.btn-search.is-active .btn-search-slider {
+  transform: translateY(-50%);
+}
+
+.btn-search-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
+  white-space: nowrap;
+}
+
 /* Bag Button with Smooth Sliding Text (BAG (0) <-> Close) */
 .btn-bag {
   min-width: 88px;
@@ -180,7 +235,7 @@
     flex-direction: column;
     align-items: flex-end;
     gap: 6px;
-    width: 124px;
+    width: 138px;
     flex-shrink: 0;
   }
 
@@ -204,15 +259,21 @@
     order: 2;
   }
 
-  #btn-shop-artworks {
-    width: 124px;
-    min-width: 124px;
+  #btn-search-artwork {
+    background-color: #000000;
+    color: #FFFFFF;
+    width: 138px;
+    min-width: 138px;
     height: 36px;
     padding: 0;
     font-size: 13px;
     letter-spacing: -0.4px;
     will-change: transform;
     transition: transform 0.65s cubic-bezier(0.76, 0, 0.24, 1);
+  }
+
+  #btn-search-artwork .btn-search-text {
+    letter-spacing: -0.4px;
   }
 
   #btn-bag {
@@ -230,31 +291,33 @@
     letter-spacing: -0.4px;
   }
 
-  /* Initial Closed State (Image 1):
+  /* Initial Closed State (All closed):
      Buttons are anchored at right: 20px.
-     Menu and BAG shift left by exactly (124 - 80 = 44px) and (124 - 78 = 46px)
-     so all 3 buttons are left-aligned at their START edge, forming a clean column! */
-  .nav-actions.is-menu-closed.is-bag-closed #btn-menu {
-    transform: translate3d(-44px, 0, 0);
+     Menu shifts left by (138 - 80 = 58px)
+     Search Artwork shifts 0px
+     BAG shifts left by (138 - 78 = 60px)
+     Forming a clean flush left-aligned column! */
+  .nav-actions.is-menu-closed.is-search-closed.is-bag-closed #btn-menu {
+    transform: translate3d(-58px, 0, 0);
   }
 
-  .nav-actions.is-menu-closed.is-bag-closed #btn-shop-artworks {
+  .nav-actions.is-menu-closed.is-search-closed.is-bag-closed #btn-search-artwork {
     transform: translate3d(0, 0, 0);
   }
 
-  .nav-actions.is-menu-closed.is-bag-closed #btn-bag {
-    transform: translate3d(-46px, 0, 0);
+  .nav-actions.is-menu-closed.is-search-closed.is-bag-closed #btn-bag {
+    transform: translate3d(-60px, 0, 0);
   }
 
   /* Menu Open State (Image 2):
      Menu slides right to the 20px right margin.
-     Shop Artworks and BAG slide smoothly down by 242px below the expanding dropdown.
+     Search Artwork and BAG slide smoothly down by 242px below the expanding dropdown.
      BAG also slides right to align flush at the 20px right margin! */
   .nav-actions.is-menu-open #btn-menu {
     transform: translate3d(0, 0, 0);
   }
 
-  .nav-actions.is-menu-open #btn-shop-artworks {
+  .nav-actions.is-menu-open #btn-search-artwork {
     transform: translate3d(0, 242px, 0);
   }
 
@@ -262,13 +325,26 @@
     transform: translate3d(0, 242px, 0);
   }
 
+  /* Search Open State */
+  .nav-actions.is-search-open #btn-menu {
+    transform: translate3d(-58px, 0, 0);
+  }
+
+  .nav-actions.is-search-open #btn-search-artwork {
+    transform: translate3d(0, 0, 0);
+  }
+
+  .nav-actions.is-search-open #btn-bag {
+    transform: translate3d(0, 256px, 0);
+  }
+
   /* Bag Open State:
      BAG button slides right to the 20px right margin while bag panel expands below! */
   .nav-actions.is-bag-open #btn-menu {
-    transform: translate3d(-44px, 0, 0);
+    transform: translate3d(-58px, 0, 0);
   }
 
-  .nav-actions.is-bag-open #btn-shop-artworks {
+  .nav-actions.is-bag-open #btn-search-artwork {
     transform: translate3d(0, 0, 0);
   }
 
