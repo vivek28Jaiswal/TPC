@@ -1,0 +1,25 @@
+/* Gallery Drag Viewport Stage */
+.gallery-viewport,
+.infinite-viewport {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  touch-action: none;
+}
+
+/* Master Movable Canvas Wall (Square Gallery Wall) */
+.gallery-canvas,
+.infinite-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5000px;
+  height: 5000px;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  pointer-events: auto;
+}
+

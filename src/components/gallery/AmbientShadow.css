@@ -1,0 +1,16 @@
+/* Ambient Wall Shadow (Sunlight beams) */
+.ambient-shadow-layer {
+  position: fixed;
+  top: -15%;
+  left: 15%;
+  width: 75vw;
+  height: 130vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  pointer-events: none;
+  opacity: 0.28;
+  mix-blend-mode: multiply;
+  z-index: 20;
+}
+
