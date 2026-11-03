@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-import LocomotiveScroll from 'locomotive-scroll'
 import gsap from 'gsap'
 import { getDragLimits, INITIAL_CENTER } from '../constants/galleryLayout'
 
@@ -15,12 +14,9 @@ import { getDragLimits, INITIAL_CENTER } from '../constants/galleryLayout'
  */
 export function useGalleryPhysics({ viewportRef, canvasRef }) {
   useEffect(() => {
-    // 1. Initialize Locomotive Scroll
-    const locomotiveScroll = new LocomotiveScroll()
-
     let limits = getDragLimits()
 
-    // 2. Position canvas centered on the Grand Hero Pavilion (Tier 3 Center) on initial load
+    // Position canvas centered on the Grand Hero Pavilion (Tier 3 Center) on initial load
     let initialX = window.innerWidth / 2 - INITIAL_CENTER.x
     let initialY = window.innerHeight / 2 - INITIAL_CENTER.y
 
@@ -38,6 +34,9 @@ export function useGalleryPhysics({ viewportRef, canvasRef }) {
     let isPointerDown = false
     let lastPointerX = 0
     let lastPointerY = 0
+    let startPointerX = 0
+    let startPointerY = 0
+    let hasMoved = false
 
     // High-resolution motion history buffer for calculating release "slide" after-effect
     const motionHistory = []
@@ -51,16 +50,23 @@ export function useGalleryPhysics({ viewportRef, canvasRef }) {
 
     // Pointer Drag Handlers
     const onPointerDown = (e) => {
-      // Do not hijack clicks on navigation buttons or menu dropdown
+      // Do not hijack clicks on navigation buttons, dropdowns, or side panel
       if (
         e.target.closest('.header-nav') ||
         e.target.closest('button') ||
-        e.target.closest('.menu-dropdown')
+        e.target.closest('.menu-dropdown') ||
+        e.target.closest('.painting-side-panel') ||
+        e.target.closest('.panel-backdrop') ||
+        e.target.closest('.search-dropdown') ||
+        e.target.closest('.bag-dropdown')
       ) {
         return
       }
 
       isPointerDown = true
+      hasMoved = false
+      startPointerX = e.clientX
+      startPointerY = e.clientY
       lastPointerX = e.clientX
       lastPointerY = e.clientY
       velX = 0
@@ -75,6 +81,13 @@ export function useGalleryPhysics({ viewportRef, canvasRef }) {
 
     const onPointerMove = (e) => {
       if (!isPointerDown) return
+
+      // Small 5px deadband so taps on paintings/canvas do not cause canvas twitch or cancel touch
+      if (!hasMoved) {
+        const dist = Math.hypot(e.clientX - startPointerX, e.clientY - startPointerY)
+        if (dist < 5) return
+        hasMoved = true
+      }
 
       const now = performance.now()
       let dx = e.clientX - lastPointerX
@@ -106,24 +119,28 @@ export function useGalleryPhysics({ viewportRef, canvasRef }) {
       isPointerDown = false
       viewport.style.cursor = 'grab'
 
-      const now = performance.now()
-      // Filter out points older than 80ms
-      while (motionHistory.length > 0 && now - motionHistory[0].time > 80) {
-        motionHistory.shift()
-      }
+      // Only fling if user actually dragged beyond deadband
+      if (hasMoved && motionHistory.length >= 2) {
+        const now = performance.now()
+        while (motionHistory.length > 0 && now - motionHistory[0].time > 80) {
+          motionHistory.shift()
+        }
 
-      // Calculate controlled slide after-effect momentum
-      if (motionHistory.length >= 2) {
-        const oldest = motionHistory[0]
-        const newest = motionHistory[motionHistory.length - 1]
-        const dt = Math.max(16, newest.time - oldest.time)
-        const vx = (newest.x - oldest.x) / dt
-        const vy = (newest.y - oldest.y) / dt
+        if (motionHistory.length >= 2) {
+          const oldest = motionHistory[0]
+          const newest = motionHistory[motionHistory.length - 1]
+          const dt = Math.max(16, newest.time - oldest.time)
+          const vx = (newest.x - oldest.x) / dt
+          const vy = (newest.y - oldest.y) / dt
 
-        // Controlled, luxurious slide after-effect (moderated speed, never shoots wildly)
-        const maxFlingSpeed = 13
-        velX = Math.max(-maxFlingSpeed, Math.min(maxFlingSpeed, vx * 11.5))
-        velY = Math.max(-maxFlingSpeed, Math.min(maxFlingSpeed, vy * 11.5))
+          // Controlled, luxurious slide after-effect
+          const maxFlingSpeed = 13
+          velX = Math.max(-maxFlingSpeed, Math.min(maxFlingSpeed, vx * 11.5))
+          velY = Math.max(-maxFlingSpeed, Math.min(maxFlingSpeed, vy * 11.5))
+        } else {
+          velX = 0
+          velY = 0
+        }
       } else {
         velX = 0
         velY = 0
@@ -132,6 +149,18 @@ export function useGalleryPhysics({ viewportRef, canvasRef }) {
 
     // Wheel / Trackpad smooth panning with gentle slide
     const onWheel = (e) => {
+      // Do not intercept or prevent wheel events occurring inside side panel, dropdowns, or modals
+      if (
+        e.target.closest('.painting-side-panel') ||
+        e.target.closest('.panel-backdrop') ||
+        e.target.closest('.bag-dropdown') ||
+        e.target.closest('.menu-dropdown') ||
+        e.target.closest('.search-dropdown') ||
+        e.target.closest('.size-guide-modal')
+      ) {
+        return
+      }
+
       e.preventDefault()
 
       targetX -= e.deltaX * 0.95
@@ -227,7 +256,6 @@ export function useGalleryPhysics({ viewportRef, canvasRef }) {
 
     // Cleanup on unmount
     return () => {
-      locomotiveScroll.destroy()
       gsap.ticker.remove(tickerUpdate)
       viewport.removeEventListener('pointerdown', onPointerDown)
       window.removeEventListener('pointermove', onPointerMove)

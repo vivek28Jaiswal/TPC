@@ -77,13 +77,13 @@ export function PaintingItem({ painting }) {
     )
   }
 
-  // Pointer & Click tracking to differentiate genuine click from canvas dragging
+  // Pointer & Touch & Click tracking to differentiate genuine tap/click from canvas dragging
   const pointerDownRef = useRef({ x: 0, y: 0, time: 0 })
   const lastOpenTimeRef = useRef(0)
 
   const triggerOpen = () => {
     const now = performance.now()
-    if (now - lastOpenTimeRef.current < 250) return // Debounce duplicate events
+    if (now - lastOpenTimeRef.current < 350) return // Debounce duplicate events across touch/pointer/click
     lastOpenTimeRef.current = now
     window.dispatchEvent(
       new CustomEvent('openPaintingDetails', { detail: painting })
@@ -103,7 +103,31 @@ export function PaintingItem({ painting }) {
     const dy = Math.abs(e.clientY - pointerDownRef.current.y)
     const dt = performance.now() - pointerDownRef.current.time
 
-    if (dx < 6 && dy < 6 && dt < 450) {
+    // Generous tap tolerance for responsive touch and desktop (up to 18px movement and 500ms duration)
+    if (dx < 18 && dy < 18 && dt < 500) {
+      triggerOpen()
+    }
+  }
+
+  const handleTouchStart = (e) => {
+    const touch = e.touches[0]
+    if (!touch) return
+    pointerDownRef.current = {
+      x: touch.clientX,
+      y: touch.clientY,
+      time: performance.now(),
+    }
+  }
+
+  const handleTouchEnd = (e) => {
+    const touch = e.changedTouches[0]
+    if (!touch) return
+    const dx = Math.abs(touch.clientX - pointerDownRef.current.x)
+    const dy = Math.abs(touch.clientY - pointerDownRef.current.y)
+    const dt = performance.now() - pointerDownRef.current.time
+
+    // Reliable tap detection on mobile screens (< 18px drift, < 500ms)
+    if (dx < 18 && dy < 18 && dt < 500) {
       triggerOpen()
     }
   }
@@ -122,6 +146,8 @@ export function PaintingItem({ painting }) {
       onPointerEnter={handlePointerEnter}
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
       onClick={handleClick}
       style={{
         left: `${painting.x}px`,

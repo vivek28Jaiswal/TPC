@@ -44,6 +44,25 @@ export function PaintingSidePanel({ isOpen, painting, onClose, onAddToBag }) {
   const [prevPaintingId, setPrevPaintingId] = useState(painting?.id)
   const panelRef = useRef(null)
   const sizeDropdownRef = useRef(null)
+  const scrollContainerRef = useRef(null)
+
+  // Direct, smooth mouse wheel scrolling over the entire side panel
+  useEffect(() => {
+    const el = scrollContainerRef.current
+    if (!el || !isOpen) return
+
+    const handleWheel = (e) => {
+      // Stop propagation to prevent gallery canvas from moving, and scroll panel smoothly
+      e.stopPropagation()
+      el.scrollTop += e.deltaY
+      e.preventDefault()
+    }
+
+    el.addEventListener('wheel', handleWheel, { passive: false })
+    return () => {
+      el.removeEventListener('wheel', handleWheel)
+    }
+  }, [isOpen])
 
   // Reset internal controls during render when a different painting is opened
   if (painting?.id !== prevPaintingId) {
@@ -155,7 +174,7 @@ export function PaintingSidePanel({ isOpen, painting, onClose, onAddToBag }) {
         aria-modal="true"
         aria-label={`${title} by ${artist}`}
       >
-        <div className="panel-scroll-container">
+        <div className="panel-scroll-container" ref={scrollContainerRef}>
           {/* Top Showcase Stage: #F6F6F6 Gray Background */}
           <div className="panel-showcase-stage">
             {/* Top-Left Bestseller Badge (top: 24px, left: 30px) */}
