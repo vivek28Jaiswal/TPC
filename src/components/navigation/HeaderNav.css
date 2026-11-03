@@ -25,6 +25,8 @@
   pointer-events: auto;
   user-select: none;
   z-index: 52;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .nav-actions {
@@ -108,9 +110,117 @@
   justify-content: center;
   box-sizing: border-box;
   transition: opacity 0.2s ease;
+  white-space: nowrap;
 }
 
 .btn-accent:hover {
   opacity: 0.92;
 }
 
+/* ==========================================================================
+   RESPONSIVE MOBILE / PHONE LAYOUT (< 768px)
+   Matches Image 1 (Closed Left-Aligned Stack) and Image 2 (Open Slide to Right)
+   Equal 20px padding on left (logo) and right (buttons)
+   Letter spacing: -0.4px across responsive design
+   ========================================================================== */
+@media (max-width: 768px) {
+  .header-nav {
+    height: auto;
+    padding: 18px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .brand-logo {
+    font-size: 14px;
+    letter-spacing: -0.4px;
+    padding-top: 8px; /* Perfectly aligns with top edge of Menu button */
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .nav-actions {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+    width: 124px;
+    flex-shrink: 0;
+  }
+
+  /* Mobile Precise Button Dimensions with -0.4px letter spacing */
+  #btn-menu {
+    width: 80px;
+    min-width: 80px;
+    height: 36px;
+    padding: 0;
+    letter-spacing: -0.4px;
+    will-change: transform;
+    transition: transform 0.65s cubic-bezier(0.76, 0, 0.24, 1),
+                opacity 0.2s ease;
+  }
+
+  #btn-menu .btn-menu-text {
+    letter-spacing: -0.4px;
+  }
+
+  .menu-dropdown {
+    order: 2;
+  }
+
+  #btn-shop-artworks {
+    width: 124px;
+    min-width: 124px;
+    height: 36px;
+    padding: 0;
+    font-size: 13px;
+    letter-spacing: -0.4px;
+    will-change: transform;
+    transition: transform 0.65s cubic-bezier(0.76, 0, 0.24, 1);
+  }
+
+  #btn-bag {
+    width: 78px;
+    min-width: 78px;
+    height: 36px;
+    padding: 0;
+    font-size: 13px;
+    letter-spacing: -0.4px;
+    will-change: transform;
+    transition: transform 0.65s cubic-bezier(0.76, 0, 0.24, 1);
+  }
+
+  /* Initial Closed State (Image 1):
+     Buttons are anchored at right: 20px.
+     Menu and BAG shift left by exactly (124 - 80 = 44px) and (124 - 78 = 46px)
+     so all 3 buttons are left-aligned at their START edge, forming a clean column! */
+  .nav-actions.is-menu-closed #btn-menu {
+    transform: translate3d(-44px, 0, 0);
+  }
+
+  .nav-actions.is-menu-closed #btn-shop-artworks {
+    transform: translate3d(0, 0, 0);
+  }
+
+  .nav-actions.is-menu-closed #btn-bag {
+    transform: translate3d(-46px, 0, 0);
+  }
+
+  /* Open State (Image 2):
+     Menu slides right to the 20px right margin.
+     Shop Artworks and BAG slide smoothly down by 242px below the expanding dropdown.
+     BAG also slides right to align flush at the 20px right margin! */
+  .nav-actions.is-menu-open #btn-menu {
+    transform: translate3d(0, 0, 0);
+  }
+
+  .nav-actions.is-menu-open #btn-shop-artworks {
+    transform: translate3d(0, 242px, 0);
+  }
+
+  .nav-actions.is-menu-open #btn-bag {
+    transform: translate3d(0, 242px, 0);
+  }
+}

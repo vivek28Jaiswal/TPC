@@ -2,8 +2,8 @@
 .ambient-shadow-layer {
   position: fixed;
   top: -15%;
-  left: 10%;
-  width: 85vw;
+  left: -10%;
+  width: 120vw;
   height: 135vh;
   background-size: cover;
   background-repeat: no-repeat;
@@ -46,5 +46,20 @@
   100% {
     transform: translate3d(0px, 0px, 0) rotate(0deg) skewX(0deg) scale(1);
     opacity: 0.22;
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVE MOBILE SHADOW (< 768px):
+   Expands fully beyond viewport on all 4 sides so breeze movement never creates cutouts
+   ========================================================================== */
+@media (max-width: 768px) {
+  .ambient-shadow-layer {
+    top: -20%;
+    left: -25%;
+    width: 150vw;
+    height: 145vh;
+    background-size: cover;
+    background-position: center;
   }
 }

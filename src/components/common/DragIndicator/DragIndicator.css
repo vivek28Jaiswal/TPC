@@ -31,3 +31,24 @@
   white-space: nowrap;
 }
 
+/* ==========================================================================
+   MOBILE PHONE VERSION (< 768px):
+   Larger hand gesture icon and prominent text for clear touch affordance
+   ========================================================================== */
+@media (max-width: 768px) {
+  .drag-explore-indicator {
+    bottom: 28px;
+    gap: 7px;
+  }
+
+  .drag-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .drag-text {
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: -0.6px;
+  }
+}

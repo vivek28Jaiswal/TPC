@@ -3,6 +3,8 @@ import './HeaderNav.css'
 
 /**
  * Top-level fixed Header and Navigation bar
+ * Responsive mobile layout matches the stacked sliding CTA design
+ * Only the Menu button toggles the dropdown open/closed
  *
  * @param {Object} props
  * @param {boolean} props.isMenuOpen - Whether the dropdown menu is visible
@@ -24,7 +26,11 @@ export function HeaderNav({
         THE POSTER CLUB
       </h1>
 
-      <nav ref={menuWrapperRef} className="nav-actions" aria-label="Main menu">
+      <nav
+        ref={menuWrapperRef}
+        className={`nav-actions ${isMenuOpen ? 'is-menu-open' : 'is-menu-closed'}`}
+        aria-label="Main menu"
+      >
         <button
           id="btn-menu"
           type="button"
@@ -71,4 +77,3 @@ export function HeaderNav({
 }
 
 export default HeaderNav
-
