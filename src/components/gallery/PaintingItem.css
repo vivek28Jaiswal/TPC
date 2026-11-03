@@ -8,8 +8,15 @@
   padding: 0;
   overflow: hidden;
   user-select: none;
-  pointer-events: none; /* Let drag events bubble smoothly to canvas */
+  pointer-events: auto;
   border-radius: 1px;
+  cursor: grab;
+  transform-origin: 50% 10%; /* Authentic hanging frame nail pivot */
+  will-change: transform;
+}
+
+.painting-item:active {
+  cursor: grabbing;
 }
 
 .painting-item img {
@@ -21,4 +28,3 @@
   -webkit-user-drag: none;
   pointer-events: none;
 }
-
