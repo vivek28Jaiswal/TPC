@@ -8,7 +8,7 @@ import './App.css'
 /**
  * Main Application Orchestrator
  *
- * Coordinates top-level interaction states, hooks up the kinetic physics engine,
+ * Coordinates top-level interaction states, kinetic physics engine,
  * and composes presentation layers cleanly.
  */
 function App() {
@@ -27,7 +27,7 @@ function App() {
 
   return (
     <div className="page-container">
-      {/* 1. Header Navigation & Expanding Menu */}
+      {/* 1. Fixed Header Navigation & Expanding Menu */}
       <HeaderNav
         isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
@@ -36,14 +36,14 @@ function App() {
         menuWrapperRef={menuWrapperRef}
       />
 
-      {/* 2. Soft Ambient Sunlight Window Shadow Overlay */}
-      <AmbientShadow />
-
-      {/* 3. Bounded Drag Art Wall Viewport with Finish Lines */}
+      {/* 2. Bounded Drag Art Wall Viewport */}
       <GalleryCanvas
         viewportRef={viewportRef}
         canvasRef={canvasRef}
       />
+
+      {/* 3. Soft Ambient Sunlight Window Shadow Overlay (Multiplies over wall and paintings) */}
+      <AmbientShadow />
 
       {/* 4. Drag to Explore Floating Indicator */}
       <DragIndicator />

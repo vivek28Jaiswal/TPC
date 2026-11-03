@@ -1,16 +1,50 @@
-/* Ambient Wall Shadow (Sunlight beams) */
+/* Ambient Wall Shadow (Sunlight beams & window reflection) */
 .ambient-shadow-layer {
   position: fixed;
   top: -15%;
-  left: 15%;
-  width: 75vw;
-  height: 130vh;
+  left: 10%;
+  width: 85vw;
+  height: 135vh;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   pointer-events: none;
-  opacity: 0.28;
+  opacity: 0.24;
   mix-blend-mode: multiply;
   z-index: 20;
+  transform-origin: 30% 10%;
+  will-change: transform, opacity;
+  animation: naturalWindowBreeze 10s ease-in-out infinite;
 }
 
+/**
+ * Natural window breeze & daylight shift animation:
+ * Simulates real wind gently moving foliage/sheer curtains outside the window,
+ * creating an organic, visible, rhythmic drift of light and shadow across the gallery wall.
+ */
+@keyframes naturalWindowBreeze {
+  0% {
+    transform: translate3d(0px, 0px, 0) rotate(0deg) skewX(0deg) scale(1);
+    opacity: 0.22;
+  }
+  20% {
+    transform: translate3d(30px, 15px, 0) rotate(1.2deg) skewX(0.7deg) scale(1.025);
+    opacity: 0.26;
+  }
+  42% {
+    transform: translate3d(14px, -14px, 0) rotate(-0.8deg) skewX(-0.5deg) scale(1.01);
+    opacity: 0.21;
+  }
+  65% {
+    transform: translate3d(-24px, 18px, 0) rotate(1.4deg) skewX(0.8deg) scale(1.03);
+    opacity: 0.26;
+  }
+  82% {
+    transform: translate3d(-10px, -6px, 0) rotate(-0.6deg) skewX(-0.4deg) scale(0.995);
+    opacity: 0.23;
+  }
+  100% {
+    transform: translate3d(0px, 0px, 0) rotate(0deg) skewX(0deg) scale(1);
+    opacity: 0.22;
+  }
+}
