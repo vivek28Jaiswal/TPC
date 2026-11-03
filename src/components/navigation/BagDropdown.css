@@ -1,0 +1,146 @@
+/* ==========================================================================
+   Smooth Expanding Bag Dropdown (Opens Right-to-Left from BAG CTA)
+   Matches Olivier Larose cubic-bezier(0.76, 0, 0.24, 1) signature physics
+   ========================================================================== */
+
+.bag-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 100%;
+  background-color: #FF5400;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.24), 0 2px 8px rgba(0, 0, 0, 0.12);
+  z-index: 60;
+  transform-origin: top right;
+  will-change: width, height, opacity;
+}
+
+/* Closed state: collapses smoothly to the BAG button (right side origin) */
+.bag-dropdown.is-closed {
+  width: 78px;
+  height: 0px;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition: width 0.75s cubic-bezier(0.76, 0, 0.24, 1),
+              height 0.75s cubic-bezier(0.76, 0, 0.24, 1),
+              opacity 0.75s cubic-bezier(0.76, 0, 0.24, 1),
+              visibility 0s linear 0.75s;
+}
+
+/* Open state: expands smoothly from right to left across the full CTA container width */
+.bag-dropdown.is-open {
+  width: 100%;
+  height: 250px;
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+  transition: width 0.75s cubic-bezier(0.76, 0, 0.24, 1),
+              height 0.75s cubic-bezier(0.76, 0, 0.24, 1),
+              opacity 0.75s cubic-bezier(0.76, 0, 0.24, 1),
+              visibility 0s linear 0s;
+}
+
+/* Inner Centered Content Container */
+.bag-dropdown-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 24px;
+}
+
+/* Empty State Card Content */
+.bag-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  text-align: center;
+  user-select: none;
+  transition: opacity 0.5s cubic-bezier(0.76, 0, 0.24, 1),
+              transform 0.5s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.bag-dropdown.is-closed .bag-empty-state {
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+.bag-dropdown.is-open .bag-empty-state {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.12s; /* Soft reveal once panel reaches full expansion */
+}
+
+/* White Shopping Cart Icon */
+.bag-cart-icon {
+  width: 24px;
+  height: 24px;
+  display: block;
+  object-fit: contain;
+  filter: brightness(0) invert(1); /* Pure crisp white #FFFFFF */
+}
+
+/* "Your Bag Is Empty" Typography */
+.bag-empty-text {
+  font-family: 'Geist', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.8px;
+  color: #FFFFFF;
+  margin: 0;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   RESPONSIVE MOBILE STYLES (< 768px)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .bag-dropdown {
+    position: absolute;
+    top: 126px; /* Sits right below the 3 stacked mobile CTAs */
+    right: 0;
+    left: auto;
+    width: 310px;
+    max-width: calc(100vw - 40px);
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.3);
+    z-index: 60;
+  }
+
+  .bag-dropdown.is-closed {
+    width: 310px;
+    max-width: calc(100vw - 40px);
+    height: 0px;
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+    transition: height 0.65s cubic-bezier(0.76, 0, 0.24, 1),
+                opacity 0.65s cubic-bezier(0.76, 0, 0.24, 1),
+                visibility 0s linear 0.65s;
+  }
+
+  .bag-dropdown.is-open {
+    width: 310px;
+    max-width: calc(100vw - 40px);
+    height: 220px;
+    opacity: 1;
+    pointer-events: auto;
+    visibility: visible;
+    transition: height 0.65s cubic-bezier(0.76, 0, 0.24, 1),
+                opacity 0.65s cubic-bezier(0.76, 0, 0.24, 1),
+                visibility 0s linear 0s;
+  }
+
+  .bag-empty-text {
+    font-size: 13px;
+    letter-spacing: -0.4px;
+  }
+}
+

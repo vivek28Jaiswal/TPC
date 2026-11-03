@@ -13,14 +13,22 @@ import './App.css'
  */
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isBagOpen, setIsBagOpen] = useState(false)
   const [activeCategory, setActiveCategory] = useState('shop')
 
   const menuWrapperRef = useRef(null)
   const viewportRef = useRef(null)
   const canvasRef = useRef(null)
 
-  // Close dropdown on outside click or Escape key
-  useClickOutside(menuWrapperRef, () => setIsMenuOpen(false), isMenuOpen)
+  // Close dropdowns on outside click or Escape key
+  useClickOutside(
+    menuWrapperRef,
+    () => {
+      setIsMenuOpen(false)
+      setIsBagOpen(false)
+    },
+    isMenuOpen || isBagOpen
+  )
 
   // Initialize smooth kinetic momentum physics and bounds damping
   useGalleryPhysics({ viewportRef, canvasRef })
@@ -31,6 +39,8 @@ function App() {
       <HeaderNav
         isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
+        isBagOpen={isBagOpen}
+        setIsBagOpen={setIsBagOpen}
         activeCategory={activeCategory}
         setActiveCategory={setActiveCategory}
         menuWrapperRef={menuWrapperRef}
