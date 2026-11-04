@@ -23,6 +23,20 @@
   cursor: grab;
 }
 
+/* 40% Opacity Wall Texture Layer */
+.page-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('./assets/wall-texture/abstract-white-gray-grunge-texture-pattern-background.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 0;
+}
+
 .page-container:active {
   cursor: grabbing;
 }

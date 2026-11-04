@@ -8,6 +8,7 @@
   height: 100vh;
   overflow: hidden;
   touch-action: none;
+  z-index: 1;
 }
 
 /* Master Movable Canvas Wall (Square Gallery Wall) */
