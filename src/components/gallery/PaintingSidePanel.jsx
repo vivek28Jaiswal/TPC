@@ -416,6 +416,9 @@ export function PaintingSidePanel({ isOpen, painting, onClose, onAddToBag }) {
             >
               {isAdded ? 'ADDED TO BAG' : 'ADD TO BAG'}
             </button>
+
+            {/* Dedicated bottom whitespace spacer guaranteeing clear visibility above phone bars & home indicators */}
+            <div className="panel-bottom-whitespace" aria-hidden="true" />
           </div>
         </div>
       </aside>
